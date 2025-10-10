@@ -1,3 +1,3 @@
 export const AppRoutes = {
-  TASKS: '/tasks',
+  TASKS: '/',
 } as const;
