@@ -81,12 +81,21 @@ const TasksPage: FC = () => {
       </Box>
 
       <Card sx={{ maxWidth: 320, height: 300 }}>
-        <CardContent>
-          <Typography variant="h6">Card Example</Typography>
-          <Typography variant="body2" color="text.secondary">
-            This card helps you visualize how paper surfaces look with your theme.
-          </Typography>
-          <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
+        <CardContent
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '100%',
+          }}
+        >
+          <Box>
+            <Typography variant="h6">Card Example</Typography>
+            <Typography variant="body2" color="text.secondary">
+              This card helps you visualize how paper surfaces look with your theme.
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button size="small" variant="contained">
               Action
             </Button>
