@@ -46,9 +46,10 @@ export const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          '*': {
-            transition: 'all 0.3s ease-in-out',
-          },
+          'button, input, .MuiButton-root, .MuiOutlinedInput-root, .MuiIconButton-root, .MuiCheckbox-root, .MuiRadio-root, .MuiSelect-root, .MuiMenuItem-root':
+            {
+              transition: 'all 0.3s ease-in-out',
+            },
         },
       },
     },

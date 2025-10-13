@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   TextField,
-  Switch,
   Checkbox,
   FormControlLabel,
   Chip,
@@ -18,7 +17,6 @@ import {
 } from '@mui/material';
 
 const TasksPage: FC = () => {
-  const [checked, setChecked] = useState(true);
   const [selectValue, setSelectValue] = useState('option1');
   const [radioValue, setRadioValue] = useState('a');
 
@@ -69,10 +67,6 @@ const TasksPage: FC = () => {
           <MenuItem value="option2">Option 2</MenuItem>
           <MenuItem value="option3">Option 3</MenuItem>
         </Select>
-        <FormControlLabel
-          control={<Switch checked={checked} onChange={(e) => setChecked(e.target.checked)} />}
-          label="Switch"
-        />
         <FormControlLabel control={<Checkbox defaultChecked />} label="Checkbox" />
         <RadioGroup row value={radioValue} onChange={(e) => setRadioValue(e.target.value)}>
           <FormControlLabel value="a" control={<Radio />} label="Option A" />
