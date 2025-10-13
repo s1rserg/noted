@@ -41,7 +41,46 @@ export const theme = createTheme({
     },
 
     MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+          fontWeight: 500,
+          textTransform: 'none',
+          fontSize: '1rem',
+          lineHeight: '160%',
+          transition: 'all 0.3s ease-in-out',
+        },
+      },
       variants: [
+        {
+          props: { variant: 'outlined', color: 'primary' },
+          style: ({ theme }) => ({
+            borderColor: theme.palette.secondary.main,
+            backgroundColor: 'transparent',
+            color: theme.palette.text.primary,
+            '&:hover, &:active': {
+              borderColor: theme.palette.secondary.dark,
+              backgroundColor: theme.palette.secondary.light,
+              color: theme.palette.secondary.contrastText,
+            },
+            '&.Mui-disabled': {
+              borderColor: theme.palette.secondary.main,
+              color: theme.palette.text.primary,
+              backgroundColor: 'transparent',
+              opacity: 0.5,
+            },
+          }),
+        },
+        {
+          props: { variant: 'contained', color: 'primary' },
+          style: ({ theme }) => ({
+            '&.Mui-disabled': {
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.text.disabled,
+              opacity: 0.5,
+            },
+          }),
+        },
         {
           props: { variant: 'sirserg' },
           style: ({ theme }) => ({
@@ -63,39 +102,6 @@ export const theme = createTheme({
           }),
         },
       ],
-      styleOverrides: {
-        root: {
-          borderRadius: 4,
-          fontWeight: 500,
-          textTransform: 'none',
-          fontSize: '1rem',
-          lineHeight: '160%',
-          transition: 'all 0.3s ease-in-out',
-        },
-        containedPrimary: ({ theme }) => ({
-          '&.Mui-disabled': {
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.text.disabled,
-            opacity: 0.5,
-          },
-        }),
-        outlinedPrimary: ({ theme }) => ({
-          borderColor: theme.palette.secondary.main,
-          backgroundColor: 'transparent',
-          color: theme.palette.text.primary,
-          '&:hover, &:active': {
-            borderColor: theme.palette.secondary.dark,
-            backgroundColor: theme.palette.secondary.light,
-            color: theme.palette.secondary.contrastText,
-          },
-          '&.Mui-disabled': {
-            borderColor: theme.palette.secondary.main,
-            color: theme.palette.text.primary,
-            backgroundColor: 'transparent',
-            opacity: 0.5,
-          },
-        }),
-      },
     },
 
     MuiOutlinedInput: {
