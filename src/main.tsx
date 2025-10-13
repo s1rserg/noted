@@ -1,6 +1,13 @@
-import { createRoot } from 'react-dom/client';
-import { RouterProvider } from 'react-router-dom';
 import { appRouter } from 'routes';
+import { createRoot } from 'react-dom/client';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { RouterProvider } from 'react-router-dom';
+import { theme } from 'styles';
 import './index.css';
 
-createRoot(document.getElementById('root')!).render(<RouterProvider router={appRouter} />);
+createRoot(document.getElementById('root')!).render(
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <RouterProvider router={appRouter} />
+  </ThemeProvider>,
+);
