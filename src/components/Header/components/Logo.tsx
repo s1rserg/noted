@@ -1,8 +1,9 @@
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { type FC } from 'react';
 
-export function Logo() {
+export const Logo: FC = () => {
   return (
     <Box
       component={Link}
@@ -21,4 +22,4 @@ export function Logo() {
       </Typography>
     </Box>
   );
-}
+};
