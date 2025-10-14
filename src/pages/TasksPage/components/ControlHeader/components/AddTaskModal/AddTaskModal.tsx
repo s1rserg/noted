@@ -1,5 +1,9 @@
 import { CommonModal } from 'components/CommonModal';
+import { Controller, useForm } from 'react-hook-form';
+import { CreateTaskDefaultValues, TaskPriorityLabels, TaskStatusLabels } from './config';
+import { CreateTaskSchema } from './schema';
 import { TaskPriority, TaskStatus } from 'types/task';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Autocomplete,
   Box,
@@ -12,48 +16,36 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import {
-  Controller,
-  type Control,
-  type FieldErrors,
-  type UseFormClearErrors,
-} from 'react-hook-form';
-import type { FC, FormEvent } from 'react';
-import { type CreateTaskFormData } from '../types';
-import type { ValueOf } from 'types/utils';
-
-const TaskStatusLabels: Record<ValueOf<typeof TaskStatus>, string> = {
-  [TaskStatus.PENDING]: 'Pending',
-  [TaskStatus.IN_PROGRESS]: 'In Progress',
-  [TaskStatus.COMPLETED]: 'Completed',
-};
-
-const TaskPriorityLabels: Record<ValueOf<typeof TaskPriority>, string> = {
-  [TaskPriority.LOW]: 'Low',
-  [TaskPriority.MEDIUM]: 'Medium',
-  [TaskPriority.HIGH]: 'High',
-};
+import type { FC } from 'react';
+import { type CreateTaskFormData } from './types';
 
 interface AddTaskModalProps {
   open: boolean;
   handleClose: () => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
-  control: Control<CreateTaskFormData>;
-  errors: FieldErrors<CreateTaskFormData>;
-  clearErrors: UseFormClearErrors<CreateTaskFormData>;
+  onSubmit: (taskData: CreateTaskFormData) => void;
 }
 
-export const AddTaskModal: FC<AddTaskModalProps> = ({
-  open,
-  handleClose,
-  onSubmit,
-  control,
-  errors,
-  clearErrors,
-}) => {
+export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmit }) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    clearErrors,
+  } = useForm<CreateTaskFormData>({
+    resolver: zodResolver(CreateTaskSchema),
+    defaultValues: CreateTaskDefaultValues,
+    reValidateMode: 'onSubmit',
+  });
+
+  const handleFormSubmit = handleSubmit((data: CreateTaskFormData) => {
+    onSubmit(data);
+    reset();
+  });
+
   return (
     <CommonModal open={open} handleClose={handleClose} title="Add Task">
-      <Box component="form" onSubmit={(e) => void onSubmit(e)}>
+      <Box component="form" onSubmit={(e) => void handleFormSubmit(e)}>
         <DialogContent>
           <Controller
             control={control}

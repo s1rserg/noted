@@ -27,5 +27,3 @@ export const CreateTaskSchema = z.object({
   status: z.enum(Object.values(TaskStatus)),
   tags: z.array(z.string()).optional(),
 });
-
-export type CreateTaskFormData = z.infer<typeof CreateTaskSchema>;

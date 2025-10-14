@@ -1,11 +1,8 @@
 import AddIcon from '@mui/icons-material/Add';
 import { AddTaskModal } from './components';
 import { Box, Collapse, IconButton, Typography } from '@mui/material';
-import { TaskPriority, TaskStatus } from 'types/task';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type FC } from 'react';
-import { CreateTaskSchema, type CreateTaskFormData } from './types';
+import { type CreateTaskFormData } from './components/AddTaskModal/types';
 
 interface Props {
   open: boolean;
@@ -18,31 +15,11 @@ export const ControlHeader: FC<Props> = ({ open, toggleOpen }) => {
   const handleModalClose = () => setModalOpen(false);
   const handleModalOpen = () => setModalOpen(true);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    clearErrors,
-  } = useForm<CreateTaskFormData>({
-    resolver: zodResolver(CreateTaskSchema),
-    defaultValues: {
-      title: '',
-      description: '',
-      deadline: '',
-      status: TaskStatus.PENDING,
-      priority: TaskPriority.MEDIUM,
-      tags: [],
-    },
-    reValidateMode: 'onSubmit',
-  });
-
-  const handleFormSubmit = handleSubmit((data) => {
+  const handleAddTask = (taskData: CreateTaskFormData) => {
     // eslint-disable-next-line no-console
-    console.log('Submitted task:', data);
-    reset();
+    console.log('Submitted task:', taskData);
     handleModalClose();
-  });
+  };
 
   return (
     <Box
@@ -62,10 +39,7 @@ export const ControlHeader: FC<Props> = ({ open, toggleOpen }) => {
           <AddTaskModal
             open={isModalOpen}
             handleClose={handleModalClose}
-            onSubmit={handleFormSubmit}
-            control={control}
-            errors={errors}
-            clearErrors={clearErrors}
+            onSubmit={handleAddTask}
           />
         </Box>
       </Collapse>
