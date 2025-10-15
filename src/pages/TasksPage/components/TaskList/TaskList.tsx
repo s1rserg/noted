@@ -1,6 +1,6 @@
-import React from 'react';
 import { Box, Grid } from '@mui/material';
 import { TaskCard } from '../TaskCard';
+import { type FC } from 'react';
 import type { Task } from 'types/task';
 import type { ViewMode } from 'pages/TasksPage/types';
 
@@ -9,7 +9,7 @@ interface TaskListProps {
   mode: ViewMode;
 }
 
-export const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
+export const TaskList: FC<TaskListProps> = ({ tasks }) => {
   const handleComplete = (id: string) => alert(`Complete task: ${id}`);
   const handleDelete = (id: string) => {
     alert(`Delete task: ${id}`);

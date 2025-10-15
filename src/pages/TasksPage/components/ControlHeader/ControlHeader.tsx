@@ -1,8 +1,7 @@
 import AddIcon from '@mui/icons-material/Add';
-import { AddTaskModal, CollapseHandle } from './components';
 import { Box, Collapse, IconButton } from '@mui/material';
+import { AddTaskModal, CollapseHandle, type CreateTaskFormData } from './components';
 import { useState, type FC } from 'react';
-import { type CreateTaskFormData } from './components/AddTaskModal/types';
 
 interface Props {
   open: boolean;

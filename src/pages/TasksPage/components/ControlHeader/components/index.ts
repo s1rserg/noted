@@ -1,2 +1,2 @@
-export { AddTaskModal } from './AddTaskModal/AddTaskModal';
+export { AddTaskModal, type CreateTaskFormData } from './AddTaskModal';
 export { CollapseHandle } from './CollapseHandle';

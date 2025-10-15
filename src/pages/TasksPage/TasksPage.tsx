@@ -1,48 +1,8 @@
 import { Box } from '@mui/material';
-import { ControlHeader } from './components/ControlHeader';
-import { TaskList } from './components/TaskList/TaskList';
+import { mockTasks } from './config';
 import { type FC, useState } from 'react';
-import { TaskPriority, TaskStatus, type Task } from 'types/task';
-import type { CreateTaskFormData } from './components/ControlHeader/components/AddTaskModal/types';
-
-const mockTasks: Task[] = [
-  {
-    id: '1',
-    title: 'Task 1',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    status: TaskStatus.IN_PROGRESS,
-    priority: TaskPriority.HIGH,
-    deadline: '2025-10-20',
-    tags: ['UI', 'Frontend'],
-  },
-  {
-    id: '2',
-    title: 'Task 2',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    status: TaskStatus.PENDING,
-    priority: TaskPriority.MEDIUM,
-  },
-  {
-    id: '3',
-    title: 'Task 3',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    status: TaskStatus.COMPLETED,
-    priority: TaskPriority.HIGH,
-    tags: ['Bug', 'Auth'],
-  },
-  {
-    id: '4',
-    title: 'Task 4',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    status: TaskStatus.PENDING,
-    priority: TaskPriority.LOW,
-    deadline: '2025-11-01',
-  },
-];
+import { type Task } from 'types/task';
+import { ControlHeader, TaskList, type CreateTaskFormData } from './components';
 
 const TasksPage: FC = () => {
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
