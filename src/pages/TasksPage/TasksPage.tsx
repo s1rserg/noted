@@ -1,16 +1,24 @@
 import { Box } from '@mui/material';
 import { mockTasks } from './config';
 import { toast } from 'react-toastify';
+import { useLocalStorage } from 'hooks';
 import { type FC, useState } from 'react';
 import { TaskStatus, type Task } from 'types/task';
 import { ControlHeader, TaskList, type CreateTaskFormData } from './components';
+import { ViewMode, type ViewModeValues } from './types';
 
 const TasksPage: FC = () => {
+  const [viewMode, setViewMode] = useLocalStorage<ViewModeValues>('taskViewMode', ViewMode.GRID);
+
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
   const [isHeaderOpen, setIsHeaderOpen] = useState(false);
 
   const handleToggleHeader = () => {
     setIsHeaderOpen((prev) => !prev);
+  };
+
+  const handleToggleViewMode = () => {
+    setViewMode((prev) => (prev === ViewMode.GRID ? ViewMode.LIST : ViewMode.GRID));
   };
 
   const handleAddTask = (taskData: CreateTaskFormData) => {
@@ -36,10 +44,12 @@ const TasksPage: FC = () => {
         open={isHeaderOpen}
         toggleOpen={handleToggleHeader}
         onAddTask={handleAddTask}
+        viewMode={viewMode}
+        toggleViewMode={handleToggleViewMode}
       />
       <TaskList
         tasks={tasks}
-        mode="grid"
+        viewMode={viewMode}
         onCompleteTask={handleCompleteTask}
         onDeleteTask={handleDeleteTask}
       />

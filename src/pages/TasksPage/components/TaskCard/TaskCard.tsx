@@ -21,8 +21,8 @@ import { TaskStatus, type Task } from 'types/task';
 
 interface Props {
   task: Task;
-  onComplete: (id: string) => void;
-  onDelete: (id: string) => void;
+  onComplete: (id: Task['id']) => void;
+  onDelete: (id: Task['id']) => void;
 }
 
 export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
@@ -42,11 +42,11 @@ export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
 
   const isCompleted = task.status === TaskStatus.COMPLETED;
 
-  const handleEdit = (id: string) => {
+  const handleEdit = (id: Task['id']) => {
     void navigate(generatePath(AppRoutes.EDIT_TASK, { id }));
   };
 
-  const handleDetails = (id: string) => {
+  const handleDetails = (id: Task['id']) => {
     void navigate(generatePath(AppRoutes.TASK_DETAILS, { id }));
   };
 
