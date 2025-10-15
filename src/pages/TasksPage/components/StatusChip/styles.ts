@@ -1,10 +1,6 @@
 import { CheckCircle, Circle, RadioButtonUnchecked } from '@mui/icons-material';
 import { TaskStatus, type TaskStatusValues } from 'types/task';
-
-export type ChipStyle = {
-  backgroundColor: string;
-  color: string;
-};
+import type { ChipStyle } from './types';
 
 export const StatusStyles: Record<TaskStatusValues, ChipStyle> = {
   [TaskStatus.PENDING]: {

@@ -1,4 +1,10 @@
-import { TaskPriority, TaskStatus, type Task } from 'types/task';
+import {
+  TaskPriority,
+  TaskStatus,
+  type Task,
+  type TaskPriorityValues,
+  type TaskStatusValues,
+} from 'types/task';
 
 export const mockTasks: Task[] = [
   {
@@ -38,3 +44,15 @@ export const mockTasks: Task[] = [
     deadline: '2025-11-01',
   },
 ];
+
+export const TaskStatusLabels: Record<TaskStatusValues, string> = {
+  [TaskStatus.PENDING]: 'Pending',
+  [TaskStatus.IN_PROGRESS]: 'In Progress',
+  [TaskStatus.COMPLETED]: 'Completed',
+};
+
+export const TaskPriorityLabels: Record<TaskPriorityValues, string> = {
+  [TaskPriority.LOW]: 'Low',
+  [TaskPriority.MEDIUM]: 'Medium',
+  [TaskPriority.HIGH]: 'High',
+};

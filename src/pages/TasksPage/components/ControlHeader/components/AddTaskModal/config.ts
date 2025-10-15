@@ -8,3 +8,6 @@ export const CreateTaskDefaultValues = {
   priority: TaskPriority.MEDIUM,
   tags: [],
 };
+
+export const TaskStatusValues = Object.values(TaskStatus);
+export const TaskPriorityValues = Object.values(TaskPriority);

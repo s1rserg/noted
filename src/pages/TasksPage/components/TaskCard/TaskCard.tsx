@@ -1,19 +1,20 @@
 import { AccountCircle, CheckCircle, Delete, Edit, Info } from '@mui/icons-material';
 import { ButtonsStyles, DescriptionStyles, PriorityStyles } from './styles';
 import { StatusChip } from '../StatusChip';
+import { TaskPriorityLabels } from 'pages/TasksPage/config';
 import { useNavigate } from 'react-router-dom';
-import { type FC } from 'react';
 import {
+  Box,
   Card,
   CardContent,
-  Typography,
-  Box,
   Chip,
   IconButton,
-  Tooltip,
   Stack,
+  Tooltip,
+  Typography,
 } from '@mui/material';
-import { TaskPriorityLabels, type Task } from 'types/task';
+import { type FC } from 'react';
+import { type Task } from 'types/task';
 
 interface Props {
   task: Task;
