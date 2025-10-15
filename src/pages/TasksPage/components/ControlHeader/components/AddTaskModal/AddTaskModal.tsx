@@ -2,7 +2,7 @@ import { CommonModal } from 'components/CommonModal';
 import { Controller, useForm } from 'react-hook-form';
 import { CreateTaskDefaultValues, TaskPriorityValues, TaskStatusValues } from './config';
 import { CreateTaskSchema } from './schema';
-import { TaskPriorityLabels, TaskStatusLabels } from 'pages/TasksPage/config';
+import { TaskPriorityLabels, TaskStatusLabels } from '../../../../config';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Autocomplete,

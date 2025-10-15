@@ -3,7 +3,7 @@ import { AppRoutes } from 'routes/config';
 import { ButtonsStyles, DescriptionStyles, PriorityStyles } from './styles';
 import { generatePath, useNavigate } from 'react-router-dom';
 import { StatusChip } from '../StatusChip';
-import { TaskPriorityLabels } from 'pages/TasksPage/config';
+import { TaskPriorityLabels } from '../../config';
 import {
   Box,
   Card,
