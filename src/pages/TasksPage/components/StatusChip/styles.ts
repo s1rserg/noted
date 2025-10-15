@@ -1,6 +1,5 @@
-import { CheckCircle, Circle, RadioButtonUnchecked } from '@mui/icons-material';
+import type { ChipStyle } from 'types/chips';
 import { TaskStatus, type TaskStatusValues } from 'types/task';
-import type { ChipStyle } from './types';
 
 export const StatusStyles: Record<TaskStatusValues, ChipStyle> = {
   [TaskStatus.PENDING]: {
@@ -15,10 +14,4 @@ export const StatusStyles: Record<TaskStatusValues, ChipStyle> = {
     backgroundColor: '#5dd55d',
     color: 'success.contrastText',
   },
-};
-
-export const StatusIcons: Record<TaskStatusValues, React.ElementType> = {
-  [TaskStatus.PENDING]: RadioButtonUnchecked,
-  [TaskStatus.IN_PROGRESS]: Circle,
-  [TaskStatus.COMPLETED]: CheckCircle,
 };

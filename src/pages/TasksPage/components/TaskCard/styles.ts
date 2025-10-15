@@ -1,6 +1,6 @@
 import { TaskPriority, type TaskPriorityValues } from 'types/task';
-import type { ChipStyle } from '../StatusChip';
 import type { SxProps } from '@mui/material';
+import type { ChipStyle } from 'types/chips';
 
 export const PriorityStyles: Record<TaskPriorityValues, ChipStyle> = {
   [TaskPriority.LOW]: {

@@ -1,6 +1,8 @@
 import { Chip } from '@mui/material';
-import { StatusIcons, StatusStyles } from './styles';
-import { TaskStatusLabels, type TaskStatusValues } from 'types/task';
+import { StatusIcons } from './config';
+import { StatusStyles } from './styles';
+import { TaskStatusLabels } from 'pages/TasksPage/config';
+import { type TaskStatusValues } from 'types/task';
 import type { FC } from 'react';
 
 interface Props {
