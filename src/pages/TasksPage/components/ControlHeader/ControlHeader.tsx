@@ -1,7 +1,8 @@
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Collapse, IconButton } from '@mui/material';
+import { useModal } from 'hooks';
 import { AddTaskModal, CollapseHandle, type CreateTaskFormData } from './components';
-import { useState, type FC } from 'react';
+import { type FC } from 'react';
 
 interface Props {
   open: boolean;
@@ -10,14 +11,11 @@ interface Props {
 }
 
 export const ControlHeader: FC<Props> = ({ open, toggleOpen, onAddTask }) => {
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const handleModalClose = () => setModalOpen(false);
-  const handleModalOpen = () => setModalOpen(true);
+  const { isOpen: isModalOpen, openModal: openModal, closeModal: closeModal } = useModal();
 
   const handleAddTask = (taskData: CreateTaskFormData) => {
     onAddTask(taskData);
-    handleModalClose();
+    closeModal();
   };
 
   return (
@@ -32,14 +30,10 @@ export const ControlHeader: FC<Props> = ({ open, toggleOpen, onAddTask }) => {
     >
       <Collapse in={open} timeout={300}>
         <Box>
-          <IconButton onClick={handleModalOpen}>
+          <IconButton onClick={openModal}>
             <AddIcon />
           </IconButton>
-          <AddTaskModal
-            open={isModalOpen}
-            handleClose={handleModalClose}
-            onSubmit={handleAddTask}
-          />
+          <AddTaskModal open={isModalOpen} handleClose={closeModal} onSubmit={handleAddTask} />
         </Box>
       </Collapse>
 

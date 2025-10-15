@@ -1,7 +1,8 @@
 import { Box } from '@mui/material';
 import { mockTasks } from './config';
+import { toast } from 'react-toastify';
 import { type FC, useState } from 'react';
-import { type Task } from 'types/task';
+import { TaskStatus, type Task } from 'types/task';
 import { ControlHeader, TaskList, type CreateTaskFormData } from './components';
 
 const TasksPage: FC = () => {
@@ -17,6 +18,18 @@ const TasksPage: FC = () => {
     setTasks((prev) => [newTask, ...prev]);
   };
 
+  const handleCompleteTask = (id: Task['id']) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === id ? { ...task, status: TaskStatus.COMPLETED } : task)),
+    );
+    toast.success('Task was completed successfully.');
+  };
+
+  const handleDeleteTask = (id: Task['id']) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+    toast.success('Task was deleted successfully.');
+  };
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', gap: 4 }}>
       <ControlHeader
@@ -24,7 +37,12 @@ const TasksPage: FC = () => {
         toggleOpen={handleToggleHeader}
         onAddTask={handleAddTask}
       />
-      <TaskList tasks={tasks} mode="grid" />
+      <TaskList
+        tasks={tasks}
+        mode="grid"
+        onCompleteTask={handleCompleteTask}
+        onDeleteTask={handleDeleteTask}
+      />
     </Box>
   );
 };

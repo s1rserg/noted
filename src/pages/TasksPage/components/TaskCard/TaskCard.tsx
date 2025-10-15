@@ -1,9 +1,11 @@
 import { AccountCircle, CheckCircle, Delete, Edit, Info } from '@mui/icons-material';
 import { AppRoutes } from 'routes/config';
 import { ButtonsStyles, DescriptionStyles, PriorityStyles } from './styles';
+import { ConfirmModal } from 'components/ConfirmModal';
 import { generatePath, useNavigate } from 'react-router-dom';
 import { StatusChip } from '../StatusChip';
 import { TaskPriorityLabels } from '../../config';
+import { useModal } from 'hooks';
 import {
   Box,
   Card,
@@ -15,7 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 import { type FC } from 'react';
-import { type Task } from 'types/task';
+import { TaskStatus, type Task } from 'types/task';
 
 interface Props {
   task: Task;
@@ -25,6 +27,20 @@ interface Props {
 
 export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
   const navigate = useNavigate();
+
+  const {
+    isOpen: isCompleteModalOpen,
+    openModal: openCompleteModal,
+    closeModal: closeCompleteModal,
+  } = useModal();
+
+  const {
+    isOpen: isDeleteModalOpen,
+    openModal: openDeleteModal,
+    closeModal: closeDeleteModal,
+  } = useModal();
+
+  const isCompleted = task.status === TaskStatus.COMPLETED;
 
   const handleEdit = (id: string) => {
     void navigate(generatePath(AppRoutes.EDIT_TASK, { id }));
@@ -70,16 +86,38 @@ export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Complete">
-          <IconButton onClick={() => onComplete(task.id)}>
-            <CheckCircle />
-          </IconButton>
+          <span>
+            <IconButton onClick={openCompleteModal} disabled={isCompleted}>
+              <CheckCircle />
+            </IconButton>
+          </span>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton onClick={() => onDelete(task.id)}>
+          <IconButton onClick={openDeleteModal}>
             <Delete />
           </IconButton>
         </Tooltip>
       </Box>
+      <ConfirmModal
+        open={isCompleteModalOpen}
+        handleClose={closeCompleteModal}
+        onConfirm={() => onComplete(task.id)}
+        title="Confirm Completion"
+        confirmText="Yes, Complete"
+        cancelText="Cancel"
+      >
+        Are you sure you want to mark this task as complete?
+      </ConfirmModal>
+      <ConfirmModal
+        open={isDeleteModalOpen}
+        handleClose={closeDeleteModal}
+        onConfirm={() => onDelete(task.id)}
+        title="Confirm Deletion"
+        confirmText="Yes, Delete"
+        cancelText="No, Keep It"
+      >
+        Are you sure you want to delete this item? This action cannot be undone.
+      </ConfirmModal>
     </Card>
   );
 };
