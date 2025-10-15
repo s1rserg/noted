@@ -1,4 +1,4 @@
-import type { ValueOf } from './utils';
+import type { ValueOf } from '../utils';
 
 export type Task = {
   id: string;

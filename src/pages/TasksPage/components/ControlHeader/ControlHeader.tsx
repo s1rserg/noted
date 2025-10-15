@@ -1,23 +1,22 @@
 import AddIcon from '@mui/icons-material/Add';
-import { AddTaskModal, CollapseHandle } from './components';
-import { Box, Collapse, IconButton, Typography } from '@mui/material';
+import { Box, Collapse, IconButton } from '@mui/material';
+import { AddTaskModal, CollapseHandle, type CreateTaskFormData } from './components';
 import { useState, type FC } from 'react';
-import { type CreateTaskFormData } from './components/AddTaskModal/types';
 
 interface Props {
   open: boolean;
   toggleOpen: () => void;
+  onAddTask: (taskData: CreateTaskFormData) => void;
 }
 
-export const ControlHeader: FC<Props> = ({ open, toggleOpen }) => {
+export const ControlHeader: FC<Props> = ({ open, toggleOpen, onAddTask }) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleModalClose = () => setModalOpen(false);
   const handleModalOpen = () => setModalOpen(true);
 
   const handleAddTask = (taskData: CreateTaskFormData) => {
-    // eslint-disable-next-line no-console
-    console.log('Submitted task:', taskData);
+    onAddTask(taskData);
     handleModalClose();
   };
 

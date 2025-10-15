@@ -1,8 +1,8 @@
 import { CommonModal } from 'components/CommonModal';
 import { Controller, useForm } from 'react-hook-form';
-import { CreateTaskDefaultValues, TaskPriorityLabels, TaskStatusLabels } from './config';
+import { CreateTaskDefaultValues, TaskPriorityValues, TaskStatusValues } from './config';
 import { CreateTaskSchema } from './schema';
-import { TaskPriority, TaskStatus } from 'types/task';
+import { TaskPriorityLabels, TaskStatusLabels } from '../../../../config';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Autocomplete,
@@ -109,7 +109,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
                   label="Status"
                   onFocus={() => clearErrors('status')}
                 >
-                  {Object.values(TaskStatus).map((value) => (
+                  {TaskStatusValues.map((value) => (
                     <MenuItem key={value} value={value}>
                       {TaskStatusLabels[value]}
                     </MenuItem>
@@ -130,7 +130,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
                   label="Priority"
                   onFocus={() => clearErrors('priority')}
                 >
-                  {Object.values(TaskPriority).map((value) => (
+                  {TaskPriorityValues.map((value) => (
                     <MenuItem key={value} value={value}>
                       {TaskPriorityLabels[value]}
                     </MenuItem>
