@@ -1,8 +1,9 @@
 import { AccountCircle, CheckCircle, Delete, Edit, Info } from '@mui/icons-material';
+import { AppRoutes } from 'routes/config';
 import { ButtonsStyles, DescriptionStyles, PriorityStyles } from './styles';
+import { generatePath, useNavigate } from 'react-router-dom';
 import { StatusChip } from '../StatusChip';
 import { TaskPriorityLabels } from 'pages/TasksPage/config';
-import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -26,11 +27,11 @@ export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
   const navigate = useNavigate();
 
   const handleEdit = (id: string) => {
-    void navigate(`/edit-task/${id}`);
+    void navigate(generatePath(AppRoutes.EDIT_TASK, { id }));
   };
 
   const handleDetails = (id: string) => {
-    void navigate(`/task/${id}`);
+    void navigate(generatePath(AppRoutes.TASK_DETAILS, { id }));
   };
 
   return (
