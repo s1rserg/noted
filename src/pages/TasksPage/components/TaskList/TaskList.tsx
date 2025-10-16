@@ -1,26 +1,59 @@
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
+import { CommonModal } from 'components/CommonModal';
+import { GridView, ListView } from './components';
 import { TaskCard } from '../TaskCard';
-import { memo, type FC } from 'react';
+import { useModal } from 'hooks';
+import { memo, useState, type FC, type ReactNode } from 'react';
+import type { ViewModeValues } from '../../types';
 import type { Task } from 'types/task';
-import type { ViewMode } from '../../types';
+import type { Nullable } from 'types/utils';
 
 interface TaskListProps {
   tasks: Task[];
-  mode: ViewMode;
-  onCompleteTask: (id: string) => void;
-  onDeleteTask: (id: string) => void;
+  viewMode: ViewModeValues;
+  onCompleteTask: (id: Task['id']) => void;
+  onDeleteTask: (id: Task['id']) => void;
 }
 
-export const TaskList: FC<TaskListProps> = memo(({ tasks, onCompleteTask, onDeleteTask }) => {
-  return (
-    <Box>
-      <Grid container spacing={2}>
-        {tasks.map((task) => (
-          <Grid key={task.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-            <TaskCard task={task} onComplete={onCompleteTask} onDelete={onDeleteTask} />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
-});
+export const TaskList: FC<TaskListProps> = memo(
+  ({ tasks, viewMode, onCompleteTask, onDeleteTask }) => {
+    const {
+      isOpen: isTaskItemModalOpen,
+      openModal: openTaskItemModal,
+      closeModal: closeTaskItemModal,
+    } = useModal();
+
+    const [selectedTaskId, setSelectedTaskId] = useState<Nullable<Task['id']>>(null);
+
+    const selectedTask = tasks.find((task) => task.id === selectedTaskId);
+
+    const handleTaskItemClick = (id: Task['id']) => {
+      setSelectedTaskId(id);
+      openTaskItemModal();
+    };
+
+    const viewMap: Record<ViewModeValues, ReactNode> = {
+      grid: <GridView tasks={tasks} onCompleteTask={onCompleteTask} onDeleteTask={onDeleteTask} />,
+      list: <ListView tasks={tasks} onTaskClick={handleTaskItemClick} />,
+    };
+
+    if (tasks.length === 0) {
+      return <Box sx={{ textAlign: 'center', p: 4 }}>There are no tasks to show.</Box>;
+    }
+
+    return (
+      <Box>
+        {viewMap[viewMode]}
+        {selectedTask && (
+          <CommonModal
+            open={isTaskItemModalOpen}
+            handleClose={closeTaskItemModal}
+            title="Task Details"
+          >
+            <TaskCard task={selectedTask} onComplete={onCompleteTask} onDelete={onDeleteTask} />
+          </CommonModal>
+        )}
+      </Box>
+    );
+  },
+);
