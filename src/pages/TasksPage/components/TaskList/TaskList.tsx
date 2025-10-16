@@ -13,10 +13,11 @@ interface TaskListProps {
   viewMode: ViewModeValues;
   onCompleteTask: (id: Task['id']) => void;
   onDeleteTask: (id: Task['id']) => void;
+  isLoading: boolean;
 }
 
 export const TaskList: FC<TaskListProps> = memo(
-  ({ tasks, viewMode, onCompleteTask, onDeleteTask }) => {
+  ({ tasks, viewMode, onCompleteTask, onDeleteTask, isLoading }) => {
     const {
       isOpen: isTaskItemModalOpen,
       openModal: openTaskItemModal,
@@ -33,8 +34,15 @@ export const TaskList: FC<TaskListProps> = memo(
     };
 
     const viewMap: Record<ViewModeValues, ReactNode> = {
-      grid: <GridView tasks={tasks} onCompleteTask={onCompleteTask} onDeleteTask={onDeleteTask} />,
-      list: <ListView tasks={tasks} onTaskClick={handleTaskItemClick} />,
+      grid: (
+        <GridView
+          tasks={tasks}
+          onCompleteTask={onCompleteTask}
+          onDeleteTask={onDeleteTask}
+          isLoading={isLoading}
+        />
+      ),
+      list: <ListView tasks={tasks} onTaskClick={handleTaskItemClick} isLoading={isLoading} />,
     };
 
     if (tasks.length === 0) {
