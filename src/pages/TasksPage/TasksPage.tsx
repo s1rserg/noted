@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import { mockTasks } from './config';
 import { toast } from 'react-toastify';
 import { useLocalStorage } from 'hooks';
-import { type FC, useState } from 'react';
+import { type FC, useCallback, useState } from 'react';
 import { TaskStatus, type Task } from 'types/task';
 import { ControlHeader, TaskList, type CreateTaskFormData } from './components';
 import { ViewMode, type ViewModeValues } from './types';
@@ -26,17 +26,17 @@ const TasksPage: FC = () => {
     setTasks((prev) => [newTask, ...prev]);
   };
 
-  const handleCompleteTask = (id: Task['id']) => {
+  const handleCompleteTask = useCallback((id: Task['id']) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) => (task.id === id ? { ...task, status: TaskStatus.COMPLETED } : task)),
     );
     toast.success('Task was completed successfully.');
-  };
+  }, []);
 
-  const handleDeleteTask = (id: Task['id']) => {
+  const handleDeleteTask = useCallback((id: Task['id']) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
     toast.success('Task was deleted successfully.');
-  };
+  }, []);
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', gap: 4 }}>
