@@ -8,6 +8,8 @@ export type Task = {
   priority: TaskPriorityValues;
   tags?: string[];
   deadline?: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export const TaskPriority = {
