@@ -13,6 +13,18 @@ const TasksPage: FC = () => {
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
   const [isHeaderOpen, setIsHeaderOpen] = useState(false);
 
+  const handleCompleteTask = useCallback((id: Task['id']) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === id ? { ...task, status: TaskStatus.COMPLETED } : task)),
+    );
+    toast.success('Task was completed successfully.');
+  }, []);
+
+  const handleDeleteTask = useCallback((id: Task['id']) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+    toast.success('Task was deleted successfully.');
+  }, []);
+
   const handleToggleHeader = () => {
     setIsHeaderOpen((prev) => !prev);
   };
@@ -25,18 +37,6 @@ const TasksPage: FC = () => {
     const newTask = { ...taskData, id: new Date().toString() };
     setTasks((prev) => [newTask, ...prev]);
   };
-
-  const handleCompleteTask = useCallback((id: Task['id']) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => (task.id === id ? { ...task, status: TaskStatus.COMPLETED } : task)),
-    );
-    toast.success('Task was completed successfully.');
-  }, []);
-
-  const handleDeleteTask = useCallback((id: Task['id']) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    toast.success('Task was deleted successfully.');
-  }, []);
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', gap: 4 }}>
