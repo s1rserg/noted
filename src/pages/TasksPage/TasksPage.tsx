@@ -2,47 +2,25 @@ import { Box } from '@mui/material';
 import { mockTasks } from './config';
 import { processTasks } from './helpers/processTasks';
 import { toast } from 'react-toastify';
-import { useDebounce, useLocalStorage, useQueryString } from 'hooks';
-import { type FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocalStorage } from 'hooks';
+import { useSearchParams } from 'react-router-dom';
+import { type FC, useCallback, useMemo, useState } from 'react';
 import { TaskStatus, type Task } from 'types/task';
 import { ControlHeader, TaskList, type CreateTaskFormData } from './components';
-import {
-  FilterSortDefaults,
-  ViewMode,
-  type PriorityFilterValues,
-  type SortByValues,
-  type SortOrderValues,
-  type StatusFilterValues,
-  type ViewModeValues,
-  QueryKeys,
-} from './types';
+import { FilterSortDefaults, QueryKeys, ViewMode, type ViewModeValues } from './types';
 
 const TasksPage: FC = () => {
   const [viewMode, setViewMode] = useLocalStorage<ViewModeValues>('taskViewMode', ViewMode.GRID);
+  const [searchParams] = useSearchParams();
 
-  const [searchQuery, setSearchQuery] = useQueryString<string>(QueryKeys.SEARCH);
-  const [sortBy, setSortBy] = useQueryString<SortByValues>(
-    QueryKeys.SORT_BY,
-    FilterSortDefaults.SORT_BY,
-  );
-  const [sortOrder, setSortOrder] = useQueryString<SortOrderValues>(
-    QueryKeys.SORT_ORDER,
-    FilterSortDefaults.SORT_ORDER,
-  );
-  const [statusFilter, setStatusFilter] = useQueryString<StatusFilterValues>(
-    QueryKeys.STATUS,
-    FilterSortDefaults.FILTER_ALL,
-  );
-  const [priorityFilter, setPriorityFilter] = useQueryString<PriorityFilterValues>(
-    QueryKeys.PRIORITY,
-    FilterSortDefaults.FILTER_ALL,
-  );
+  const searchQuery = searchParams.get(QueryKeys.SEARCH) ?? '';
+  const sortBy = searchParams.get(QueryKeys.SORT_BY) ?? FilterSortDefaults.SORT_BY;
+  const sortOrder = searchParams.get(QueryKeys.SORT_ORDER) ?? FilterSortDefaults.SORT_ORDER;
+  const statusFilter = searchParams.get(QueryKeys.STATUS) ?? FilterSortDefaults.FILTER_ALL;
+  const priorityFilter = searchParams.get(QueryKeys.PRIORITY) ?? FilterSortDefaults.FILTER_ALL;
 
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
   const [isHeaderOpen, setIsHeaderOpen] = useState(true);
-
-  const [inputValue, setInputValue] = useState(searchQuery);
-  const debouncedSearchQuery = useDebounce(inputValue, 500);
 
   const processedTasks = useMemo(
     () =>
@@ -87,12 +65,6 @@ const TasksPage: FC = () => {
     setTasks((prev) => [newTask, ...prev]);
   };
 
-  useEffect(() => {
-    if (debouncedSearchQuery !== searchQuery) {
-      setSearchQuery(debouncedSearchQuery);
-    }
-  }, [debouncedSearchQuery, setSearchQuery, searchQuery]);
-
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', gap: 4 }}>
       <ControlHeader
@@ -101,16 +73,6 @@ const TasksPage: FC = () => {
         onAddTask={handleAddTask}
         viewMode={viewMode}
         toggleViewMode={handleToggleViewMode}
-        searchQuery={inputValue}
-        onSearchChange={setInputValue}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        sortOrder={sortOrder}
-        setSortOrder={setSortOrder}
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-        priorityFilter={priorityFilter}
-        setPriorityFilter={setPriorityFilter}
       />
       <TaskList
         tasks={processedTasks}
