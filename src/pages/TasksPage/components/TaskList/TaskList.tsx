@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { CommonModal } from 'components/CommonModal';
-import { GridView, ListView } from './components';
+import { GridView, GridViewSkeleton, ListView, ListViewSkeleton } from './components';
 import { TaskCard } from '../TaskCard';
 import { useModal } from 'hooks';
 import { memo, useState, type FC, type ReactNode } from 'react';
@@ -13,10 +13,11 @@ interface TaskListProps {
   viewMode: ViewModeValues;
   onCompleteTask: (id: Task['id']) => void;
   onDeleteTask: (id: Task['id']) => void;
+  isLoading: boolean;
 }
 
 export const TaskList: FC<TaskListProps> = memo(
-  ({ tasks, viewMode, onCompleteTask, onDeleteTask }) => {
+  ({ tasks, viewMode, onCompleteTask, onDeleteTask, isLoading }) => {
     const {
       isOpen: isTaskItemModalOpen,
       openModal: openTaskItemModal,
@@ -33,8 +34,16 @@ export const TaskList: FC<TaskListProps> = memo(
     };
 
     const viewMap: Record<ViewModeValues, ReactNode> = {
-      grid: <GridView tasks={tasks} onCompleteTask={onCompleteTask} onDeleteTask={onDeleteTask} />,
-      list: <ListView tasks={tasks} onTaskClick={handleTaskItemClick} />,
+      grid: isLoading ? (
+        <GridViewSkeleton />
+      ) : (
+        <GridView tasks={tasks} onCompleteTask={onCompleteTask} onDeleteTask={onDeleteTask} />
+      ),
+      list: isLoading ? (
+        <ListViewSkeleton />
+      ) : (
+        <ListView tasks={tasks} onTaskClick={handleTaskItemClick} />
+      ),
     };
 
     if (tasks.length === 0) {

@@ -4,7 +4,7 @@ import { processTasks } from './helpers/processTasks';
 import { toast } from 'react-toastify';
 import { useLocalStorage } from 'hooks';
 import { useSearchParams } from 'react-router-dom';
-import { type FC, useCallback, useMemo, useState } from 'react';
+import { type FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { TaskStatus, type Task } from 'types/task';
 import { ControlHeader, TaskList, type CreateTaskFormData } from './components';
 import { FilterSortDefaults, QueryKeys, ViewMode, type ViewModeValues } from './types';
@@ -18,6 +18,8 @@ const TasksPage: FC = () => {
   const sortOrder = searchParams.get(QueryKeys.SORT_ORDER) ?? FilterSortDefaults.SORT_ORDER;
   const statusFilter = searchParams.get(QueryKeys.STATUS) ?? FilterSortDefaults.FILTER_ALL;
   const priorityFilter = searchParams.get(QueryKeys.PRIORITY) ?? FilterSortDefaults.FILTER_ALL;
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
   const [isHeaderOpen, setIsHeaderOpen] = useState(true);
@@ -65,6 +67,15 @@ const TasksPage: FC = () => {
     setTasks((prev) => [newTask, ...prev]);
   };
 
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', gap: 4 }}>
       <ControlHeader
@@ -79,6 +90,7 @@ const TasksPage: FC = () => {
         viewMode={viewMode}
         onCompleteTask={handleCompleteTask}
         onDeleteTask={handleDeleteTask}
+        isLoading={isLoading}
       />
     </Box>
   );

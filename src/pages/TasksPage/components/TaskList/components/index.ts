@@ -1,2 +1,2 @@
-export { GridView } from './GridView';
-export { ListView } from './ListView';
+export { GridView, GridViewSkeleton } from './GridView';
+export { ListView, ListViewSkeleton } from './ListView';
