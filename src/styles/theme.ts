@@ -8,8 +8,18 @@ export const theme = createTheme({
     light: {
       palette: {
         mode: 'light',
-        primary: { main: '#635ac3', light: '#483ab6', dark: '#483ab6', contrastText: '#FDFCFA' },
-        secondary: { main: '#d4c9a7', light: '#f3eedd', dark: '#b4ab8e', contrastText: '#403C31' },
+        primary: {
+          main: '#635ac3',
+          light: '#483ab6',
+          dark: '#483ab6',
+          contrastText: '#FDFCFA',
+        },
+        secondary: {
+          main: '#d4c9a7',
+          light: '#f3eedd',
+          dark: '#b4ab8e',
+          contrastText: '#403C31',
+        },
         background: { default: '#FDFCFA', paper: '#FAF8F1' },
         text: { primary: '#403C31', secondary: '#66614F', disabled: '#EBDFBC' },
         divider: '#EBDFBC',
@@ -19,8 +29,18 @@ export const theme = createTheme({
     dark: {
       palette: {
         mode: 'dark',
-        primary: { main: '#635ac3', light: '#7d74d6', dark: '#4d469b', contrastText: '#FDFCFA' },
-        secondary: { main: '#d4c9a7', light: '#e6dfc8', dark: '#b4ab8e', contrastText: '#121212' },
+        primary: {
+          main: '#635ac3',
+          light: '#7d74d6',
+          dark: '#4d469b',
+          contrastText: '#FDFCFA',
+        },
+        secondary: {
+          main: '#d4c9a7',
+          light: '#e6dfc8',
+          dark: '#b4ab8e',
+          contrastText: '#121212',
+        },
         background: { default: '#121212', paper: '#1E1E1E' },
         text: { primary: '#F5F3E7', secondary: '#BDB6A3', disabled: '#EBDFBC' },
         divider: '#3A3529',
@@ -121,6 +141,12 @@ export const theme = createTheme({
           },
           '&.Mui-error .MuiOutlinedInput-notchedOutline': {
             borderColor: theme.palette.error.main,
+          },
+          '& input:-webkit-autofill': {
+            WebkitBoxShadow: `0 0 0px 1000px ${theme.palette.background.default} inset`,
+            WebkitTextFillColor: theme.palette.text.primary,
+            caretColor: theme.palette.text.primary,
+            transition: 'background-color 5000s ease-in-out 0s',
           },
         }),
       },
