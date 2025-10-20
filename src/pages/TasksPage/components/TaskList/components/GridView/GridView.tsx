@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { TaskCard } from '../../TaskCard';
+import { TaskCard } from '../../../TaskCard';
 import type { FC } from 'react';
 import type { Task } from 'types/task';
 
