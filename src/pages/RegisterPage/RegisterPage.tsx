@@ -13,7 +13,6 @@ import {
   type ApiError,
 } from 'api';
 import { AppRoutes } from 'routes';
-import { type AxiosResponse } from 'axios';
 import { localStorageService } from 'utils/LocalStorageService';
 
 export const RegisterPage: FC = () => {
@@ -24,9 +23,8 @@ export const RegisterPage: FC = () => {
   const handleStepOneSubmit = async (data: SignUpLocalDto): Promise<boolean> => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       const requestConfig = authApiService.signUp(data);
-      const response: AxiosResponse<AuthResponse> = await httpClient(requestConfig);
+      const response = await httpClient<AuthResponse>(requestConfig);
 
       localStorageService.setAccessToken(response.data.accessToken);
 
