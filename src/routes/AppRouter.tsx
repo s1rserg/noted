@@ -3,23 +3,39 @@ import { AppRoutes } from './config';
 import { AuthLayout, MainLayout } from 'layouts';
 import { RegisterPage } from 'pages/RegisterPage/RegisterPage';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
+import { LoginPage } from 'pages/LoginPage/LoginPage';
+import { ProtectedRoute, PublicRoute } from './components';
 
 const APP_ROUTES: RouteObject[] = [
   {
-    element: <MainLayout />,
+    element: <ProtectedRoute />,
     children: [
       {
-        path: AppRoutes.TASKS,
-        element: <TasksPage />,
+        element: <MainLayout />,
+        children: [
+          {
+            path: AppRoutes.TASKS,
+            element: <TasksPage />,
+          },
+        ],
       },
     ],
   },
   {
-    element: <AuthLayout />,
+    element: <PublicRoute />,
     children: [
       {
-        path: AppRoutes.REGISTER,
-        element: <RegisterPage />,
+        element: <AuthLayout />,
+        children: [
+          {
+            path: AppRoutes.REGISTER,
+            element: <RegisterPage />,
+          },
+          {
+            path: AppRoutes.LOGIN,
+            element: <LoginPage />,
+          },
+        ],
       },
     ],
   },

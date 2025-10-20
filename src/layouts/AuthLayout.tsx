@@ -17,7 +17,18 @@ export const AuthLayout: FC = () => {
           alignItems: 'center',
         }}
       >
-        <Outlet />
+        <Box
+          sx={{
+            width: {
+              xs: '100vw',
+              sm: '90vw',
+              md: '70vw',
+              lg: '20vw',
+            },
+          }}
+        >
+          <Outlet />
+        </Box>
       </Box>
     </>
   );

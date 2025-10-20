@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { Step1Form, Step2Form } from './components';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -16,9 +15,10 @@ import { AppRoutes } from 'routes';
 import { localStorageService } from 'utils/LocalStorageService';
 
 export const RegisterPage: FC = () => {
+  const navigate = useNavigate();
+
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleStepOneSubmit = async (data: SignUpLocalDto): Promise<boolean> => {
     setIsLoading(true);
@@ -66,20 +66,11 @@ export const RegisterPage: FC = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: {
-          xs: '100vw',
-          sm: '90vw',
-          md: '70vw',
-          lg: '20vw',
-        },
-      }}
-    >
+    <>
       {step === 1 && <Step1Form onSubmit={handleStepOneSubmit} isLoading={isLoading} />}
       {step === 2 && (
         <Step2Form onSubmit={handleStepTwoSubmit} onSkip={handleSkip} isLoading={isLoading} />
       )}
-    </Box>
+    </>
   );
 };
