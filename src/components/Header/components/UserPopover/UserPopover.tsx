@@ -23,6 +23,9 @@ export const UserPopover: FC = () => {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<Nullable<HTMLElement>>(null);
+
+  if (!user) return null;
+
   const open = Boolean(anchorEl);
 
   const emptyProfile = user && !user.name;
