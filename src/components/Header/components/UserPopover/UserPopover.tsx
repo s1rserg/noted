@@ -36,6 +36,7 @@ export const UserPopover: FC = () => {
   const handleLogout = async () => {
     handleClose();
     await logout();
+    void navigate(AppRoutes.LOGIN, { replace: true });
   };
 
   const handleClickUpdateProfile = () => {

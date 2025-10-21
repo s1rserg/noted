@@ -4,7 +4,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, type FC } from 'react';
 import { useUserStore } from 'store';
 import { localStorageService } from 'utils/LocalStorageService';
-import { AppRoutes } from 'routes';
 
 export const MainLayout: FC = () => {
   const user = useUserStore((state) => state.user);
@@ -17,10 +16,6 @@ export const MainLayout: FC = () => {
   useEffect(() => {
     if (!user && accessToken) {
       void initUser();
-    }
-
-    if (!user && !accessToken) {
-      void navigate(AppRoutes.LOGIN, { replace: true });
     }
   }, [user, accessToken, initUser, navigate]);
 
