@@ -9,6 +9,13 @@ class UserApiService {
       data,
     };
   }
+
+  public fetchUser(): AxiosRequestConfig {
+    return {
+      method: 'GET',
+      url: '/users/me',
+    };
+  }
 }
 
 export const userApiService = new UserApiService();

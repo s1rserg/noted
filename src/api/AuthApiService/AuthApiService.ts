@@ -18,6 +18,13 @@ class AuthApiService {
       data,
     };
   }
+
+  public signOut(): AxiosRequestConfig {
+    return {
+      method: 'GET',
+      url: '/auth/sign-out',
+    };
+  }
 }
 
 export const authApiService = new AuthApiService();

@@ -4,4 +4,5 @@ export const AppRoutes = {
   TASK_DETAILS: '/task/:id',
   REGISTER: '/sign-up',
   LOGIN: '/sign-in',
+  PROFILE: 'profile',
 } as const;
