@@ -1,9 +1,7 @@
-import type { CreateUserSchema, UpdateUserSchema } from './schemas';
-
 import type { Nullable } from 'types/utils';
+import type { UpdateUserSchema } from './schemas';
 import type { infer as ZodInfer } from 'zod';
 
-export type CreateUserDto = ZodInfer<typeof CreateUserSchema>;
 export type UpdateUserDto = ZodInfer<typeof UpdateUserSchema>;
 
 export interface User {
