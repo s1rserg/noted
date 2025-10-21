@@ -39,6 +39,15 @@ const APP_ROUTES: RouteObject[] = [
       },
     ],
   },
+  {
+    element: <AuthLayout />,
+    children: [
+      {
+        path: AppRoutes.REGISTER,
+        element: <RegisterPage />,
+      },
+    ],
+  },
 ];
 
 export const appRouter = createBrowserRouter(APP_ROUTES);
