@@ -1,9 +1,29 @@
 import { Box } from '@mui/material';
 import { Header } from 'components/Header';
-import { Outlet } from 'react-router-dom';
-import type { FC } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, type FC } from 'react';
+import { useUserStore } from 'store';
+import { localStorageService } from 'utils/LocalStorageService';
+import { AppRoutes } from 'routes';
 
 export const MainLayout: FC = () => {
+  const user = useUserStore((state) => state.user);
+  const initUser = useUserStore((state) => state.initUser);
+
+  const navigate = useNavigate();
+
+  const accessToken = localStorageService.getAccessToken();
+
+  useEffect(() => {
+    if (!user && accessToken) {
+      void initUser();
+    }
+
+    if (!user && !accessToken) {
+      void navigate(AppRoutes.LOGIN, { replace: true });
+    }
+  }, [user, accessToken, initUser, navigate]);
+
   return (
     <>
       <Header />
