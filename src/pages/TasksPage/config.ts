@@ -54,15 +54,15 @@ export const mockTasks: Task[] = [
 ];
 
 export const TaskStatusLabels: Record<TaskStatusValues, string> = {
-  [TaskStatus.PENDING]: 'Pending',
-  [TaskStatus.IN_PROGRESS]: 'In Progress',
-  [TaskStatus.COMPLETED]: 'Completed',
+  [TaskStatus.PENDING]: 'statusOptions.pending',
+  [TaskStatus.IN_PROGRESS]: 'statusOptions.in_progress',
+  [TaskStatus.COMPLETED]: 'statusOptions.completed',
 };
 
 export const TaskPriorityLabels: Record<TaskPriorityValues, string> = {
-  [TaskPriority.LOW]: 'Low',
-  [TaskPriority.MEDIUM]: 'Medium',
-  [TaskPriority.HIGH]: 'High',
+  [TaskPriority.LOW]: 'priorityOptions.low',
+  [TaskPriority.MEDIUM]: 'priorityOptions.medium',
+  [TaskPriority.HIGH]: 'priorityOptions.high',
 };
 
 export const OrderMap = {

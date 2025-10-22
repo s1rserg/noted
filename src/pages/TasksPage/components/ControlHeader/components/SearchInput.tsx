@@ -2,6 +2,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, IconButton, InputAdornment, InputBase, Tooltip } from '@mui/material';
 import { useState, useRef, type FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   searchQuery: string;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const SearchInput: FC<Props> = ({ searchQuery, onSearchChange }) => {
+  const { t } = useTranslation('tasksPage');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -34,7 +36,7 @@ export const SearchInput: FC<Props> = ({ searchQuery, onSearchChange }) => {
         borderColor: isExpanded ? 'divider' : 'background.default',
       }}
     >
-      <Tooltip title="Search">
+      <Tooltip title={t('header.search.title')}>
         <IconButton
           onClick={handleIconClick}
           sx={{ color: 'primary.main', pointerEvents: isExpanded ? 'none' : 'auto' }}
@@ -44,7 +46,7 @@ export const SearchInput: FC<Props> = ({ searchQuery, onSearchChange }) => {
       </Tooltip>
       <InputBase
         inputRef={inputRef}
-        placeholder="Search"
+        placeholder={t('header.search.placeholder')}
         value={searchQuery}
         onChange={(e) => onSearchChange(e.target.value)}
         onFocus={() => setIsFocused(true)}

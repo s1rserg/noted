@@ -10,6 +10,7 @@ import {
   type StatusFilterValues,
 } from '../../../../types';
 import type { Nullable } from 'types/utils';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   sortBy: SortByValues;
@@ -32,6 +33,7 @@ export const FilterSortControls: FC<Props> = ({
   priorityFilter,
   setPriorityFilter,
 }) => {
+  const { t } = useTranslation('tasksPage');
   const [anchorEl, setAnchorEl] = useState<Nullable<HTMLElement>>(null);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
@@ -52,7 +54,7 @@ export const FilterSortControls: FC<Props> = ({
 
   return (
     <>
-      <Tooltip title="Sorting and filters">
+      <Tooltip title={t('header.filterSort.title')}>
         <IconButton onClick={handleClick} sx={{ color: 'primary.main' }}>
           <Badge color="secondary" variant="dot" invisible={!isFilterApplied}>
             <TuneIcon />
@@ -84,7 +86,7 @@ export const FilterSortControls: FC<Props> = ({
             />
 
             <Button onClick={handleResetFilters} fullWidth sx={{ mt: 1 }} variant="outlined">
-              Reset
+              {t('header.filterSort.reset')}
             </Button>
           </Stack>
         </Box>

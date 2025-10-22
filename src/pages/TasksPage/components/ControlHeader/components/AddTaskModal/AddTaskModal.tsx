@@ -1,7 +1,7 @@
 import { CommonModal } from 'components/CommonModal';
 import { Controller, useForm } from 'react-hook-form';
 import { CreateTaskDefaultValues, TaskPriorityValues, TaskStatusValues } from './config';
-import { CreateTaskSchema } from './schema';
+import { getCreateTaskSchema } from './schema';
 import { TaskPriorityLabels, TaskStatusLabels } from '../../../../config';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -16,8 +16,9 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import type { FC } from 'react';
+import { useEffect, useMemo, type FC } from 'react';
 import { type CreateTaskFormData } from './types';
+import { useTranslation } from 'react-i18next';
 
 interface AddTaskModalProps {
   open: boolean;
@@ -26,6 +27,9 @@ interface AddTaskModalProps {
 }
 
 export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmit }) => {
+  const { t } = useTranslation('tasksPage');
+  const createTaskSchema = useMemo(() => getCreateTaskSchema(t), [t]);
+
   const {
     control,
     handleSubmit,
@@ -33,7 +37,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
     reset,
     clearErrors,
   } = useForm<CreateTaskFormData>({
-    resolver: zodResolver(CreateTaskSchema),
+    resolver: zodResolver(createTaskSchema),
     defaultValues: CreateTaskDefaultValues,
     reValidateMode: 'onSubmit',
   });
@@ -43,8 +47,15 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
     reset();
   });
 
+  useEffect(() => {
+    if (open) {
+      reset();
+      clearErrors();
+    }
+  }, [open, reset, clearErrors]);
+
   return (
-    <CommonModal open={open} handleClose={handleClose} title="Add Task">
+    <CommonModal open={open} handleClose={handleClose} title={t('add.title')}>
       <Box component="form" onSubmit={(e) => void handleFormSubmit(e)}>
         <DialogContent>
           <Controller
@@ -53,7 +64,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Title"
+                label={t('add.labels.title')}
                 fullWidth
                 margin="normal"
                 error={!!errors.title}
@@ -68,7 +79,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Description"
+                label={t('add.labels.description')}
                 fullWidth
                 multiline
                 margin="normal"
@@ -84,7 +95,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
             render={({ field }) => (
               <TextField
                 {...field}
-                label="Deadline"
+                label={t('add.labels.deadline')}
                 type="date"
                 fullWidth
                 margin="normal"
@@ -102,16 +113,16 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
             name="status"
             render={({ field }) => (
               <FormControl fullWidth margin="normal">
-                <InputLabel id="status-select-label">Status</InputLabel>
+                <InputLabel id="status-select-label">{t('add.labels.status')}</InputLabel>
                 <Select
                   {...field}
                   labelId="status-select-label"
-                  label="Status"
+                  label={t('add.labels.status')}
                   onFocus={() => clearErrors('status')}
                 >
                   {TaskStatusValues.map((value) => (
                     <MenuItem key={value} value={value}>
-                      {TaskStatusLabels[value]}
+                      {t(TaskStatusLabels[value])}
                     </MenuItem>
                   ))}
                 </Select>
@@ -123,16 +134,16 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
             name="priority"
             render={({ field }) => (
               <FormControl fullWidth margin="normal">
-                <InputLabel id="priority-select-label">Priority</InputLabel>
+                <InputLabel id="priority-select-label">{t('add.labels.priority')}</InputLabel>
                 <Select
                   {...field}
                   labelId="priority-select-label"
-                  label="Priority"
+                  label={t('add.labels.priority')}
                   onFocus={() => clearErrors('priority')}
                 >
                   {TaskPriorityValues.map((value) => (
                     <MenuItem key={value} value={value}>
-                      {TaskPriorityLabels[value]}
+                      {t(TaskPriorityLabels[value])}
                     </MenuItem>
                   ))}
                 </Select>
@@ -155,7 +166,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
                   <TextField
                     {...params}
                     name={name}
-                    label="Tags"
+                    label={t('add.labels.tags')}
                     margin="normal"
                     error={!!errors.tags}
                     helperText={errors.tags?.message}
@@ -169,10 +180,10 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
 
         <DialogActions sx={{ display: 'flex', justifyContent: 'space-between', px: 3 }}>
           <Button onClick={handleClose} variant="outlined">
-            Cancel
+            {t('add.buttons.cancel')}
           </Button>
           <Button type="submit" variant="contained">
-            Create
+            {t('add.buttons.create')}
           </Button>
         </DialogActions>
       </Box>

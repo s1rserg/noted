@@ -8,8 +8,10 @@ import { type FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { TaskStatus, type Task } from 'types/task';
 import { ControlHeader, TaskList, type CreateTaskFormData } from './components';
 import { FilterSortDefaults, QueryKeys, ViewMode, type ViewModeValues } from './types';
+import { useTranslation } from 'react-i18next';
 
 const TasksPage: FC = () => {
+  const { t } = useTranslation('tasksPage');
   const [viewMode, setViewMode] = useLocalStorage<ViewModeValues>('taskViewMode', ViewMode.GRID);
   const [searchParams] = useSearchParams();
 
@@ -37,17 +39,25 @@ const TasksPage: FC = () => {
     [tasks, searchQuery, sortBy, sortOrder, statusFilter, priorityFilter],
   );
 
-  const handleCompleteTask = useCallback((id: Task['id']) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => (task.id === id ? { ...task, status: TaskStatus.COMPLETED } : task)),
-    );
-    toast.success('Task was completed successfully.');
-  }, []);
+  const handleCompleteTask = useCallback(
+    (id: Task['id']) => {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === id ? { ...task, status: TaskStatus.COMPLETED } : task,
+        ),
+      );
+      toast.success(t('complete.successMsg'));
+    },
+    [t],
+  );
 
-  const handleDeleteTask = useCallback((id: Task['id']) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    toast.success('Task was deleted successfully.');
-  }, []);
+  const handleDeleteTask = useCallback(
+    (id: Task['id']) => {
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+      toast.success(t('delete.successMsg'));
+    },
+    [t],
+  );
 
   const handleToggleHeader = () => {
     setIsHeaderOpen((prev) => !prev);

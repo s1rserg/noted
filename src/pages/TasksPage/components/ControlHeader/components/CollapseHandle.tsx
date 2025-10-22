@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   open: boolean;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export const CollapseHandle: FC<Props> = ({ open, toggleOpen }) => {
+  const { t } = useTranslation('tasksPage');
   return (
     <Box
       onClick={toggleOpen}
@@ -36,7 +38,7 @@ export const CollapseHandle: FC<Props> = ({ open, toggleOpen }) => {
           fontSize: 14,
         }}
       >
-        {open ? 'Hide controls' : 'Show controls'}
+        {open ? t('header.collapse.hide') : t('header.collapse.show')}
       </Typography>
     </Box>
   );

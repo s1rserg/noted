@@ -1,8 +1,18 @@
 import { z } from 'zod';
+import type { TFunction } from 'i18next';
 
-export const SignInLocalSchema = z.strictObject({
-  email: z.email('Email is not valid'),
-  password: z.string().min(6, 'Min password length is 6'),
+export const SignInLocalSchemaBase = z.strictObject({
+  email: z.string(),
+  password: z.string(),
 });
 
-export const SignUpLocalSchema = z.strictObject({}).extend(SignInLocalSchema.shape);
+export const getSignInLocalSchema = (t: TFunction) =>
+  SignInLocalSchemaBase.extend({
+    email: z.email(t('validation.email')),
+    password: z.string().min(6, t('validation.passwordMin')),
+  });
+
+export const SignUpLocalSchemaBase = SignInLocalSchemaBase.extend({});
+
+export const getSignUpLocalSchema = (t: TFunction) =>
+  z.strictObject({}).extend(getSignInLocalSchema(t).shape);

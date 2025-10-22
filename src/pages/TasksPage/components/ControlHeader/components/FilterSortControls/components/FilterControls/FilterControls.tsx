@@ -2,6 +2,7 @@ import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/mate
 import { PriorityFilterOptions, StatusFilterOptions } from './config';
 import type { FC } from 'react';
 import type { PriorityFilterValues, StatusFilterValues } from '../../../../../../types';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   statusFilter: StatusFilterValues;
@@ -16,33 +17,35 @@ export const FilterControls: FC<Props> = ({
   priorityFilter,
   setPriorityFilter,
 }) => {
+  const { t } = useTranslation('tasksPage');
+
   return (
     <>
-      <Typography sx={{ pt: 1 }}>Filters</Typography>
+      <Typography sx={{ pt: 1 }}>{t('header.filters.title')}</Typography>
       <FormControl size="small" fullWidth>
-        <InputLabel>Status</InputLabel>
+        <InputLabel>{t('header.filters.status')}</InputLabel>
         <Select
           value={statusFilter}
-          label="Status"
+          label={t('header.filters.status')}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
           {StatusFilterOptions.map((opt) => (
             <MenuItem key={opt.value} value={opt.value}>
-              {opt.label}
+              {t(opt.label)}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
       <FormControl size="small" fullWidth>
-        <InputLabel>Priority</InputLabel>
+        <InputLabel>{t('header.filters.priority')}</InputLabel>
         <Select
           value={priorityFilter}
-          label="Priority"
+          label={t('header.filters.priority')}
           onChange={(e) => setPriorityFilter(e.target.value)}
         >
           {PriorityFilterOptions.map((opt) => (
             <MenuItem key={opt.value} value={opt.value}>
-              {opt.label}
+              {t(opt.label)}
             </MenuItem>
           ))}
         </Select>

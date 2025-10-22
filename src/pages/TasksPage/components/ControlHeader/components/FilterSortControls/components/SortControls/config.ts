@@ -1,8 +1,8 @@
 import { SortBy } from '../../../../../../types';
 
 export const SortOptions = [
-  { value: SortBy.CREATED_AT, label: 'By Creation date' },
-  { value: SortBy.TITLE, label: 'By Title' },
-  { value: SortBy.STATUS, label: 'By Status' },
-  { value: SortBy.PRIORITY, label: 'By Priority' },
+  { value: SortBy.CREATED_AT, label: 'header.sort.options.created_at' },
+  { value: SortBy.TITLE, label: 'header.sort.options.title' },
+  { value: SortBy.STATUS, label: 'header.sort.options.status' },
+  { value: SortBy.PRIORITY, label: 'header.sort.options.priority' },
 ];

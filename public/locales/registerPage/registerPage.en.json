@@ -1,0 +1,34 @@
+{
+  "step1": {
+    "title": "Create Account",
+    "link": "Already have an account? Sign in.",
+    "labels": {
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "button": "Continue",
+    "successMsg": "Account created successfully!"
+  },
+  "step2": {
+    "title": "Additional Info",
+    "labels": {
+      "name": "Name",
+      "surname": "Surname",
+      "birthday": "Birthday"
+    },
+    "buttons": {
+      "skip": "Skip",
+      "save": "Save"
+    },
+    "successMsg": "Profile updated successfully!"
+  },
+  "validation": {
+    "email": "Email is not valid",
+    "passwordMin": "Min password length is 6",
+    "confirmPasswordRequired": "Confirm password is required",
+    "passwordsDontMatch": "Passwords don't match",
+    "nameMin": "Min name length is 2",
+    "surnameMin": "Min surname length is 2"
+  }
+}

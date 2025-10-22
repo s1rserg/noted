@@ -13,8 +13,10 @@ import {
 } from 'api';
 import { AppRoutes } from 'routes';
 import { localStorageService } from 'utils/LocalStorageService';
+import { useTranslation } from 'react-i18next';
 
 export const RegisterPage: FC = () => {
+  const { t } = useTranslation('registerPage');
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1);
@@ -28,7 +30,7 @@ export const RegisterPage: FC = () => {
 
       localStorageService.setAccessToken(response.data.accessToken);
 
-      toast.success('Account created successfully!');
+      toast.success(t('step1.successMsg'));
 
       setStep(2);
       setIsLoading(false);
@@ -48,7 +50,7 @@ export const RegisterPage: FC = () => {
       const requestConfig = userApiService.updateProfile(data);
 
       await httpClient(requestConfig);
-      toast.success('Profile updated!');
+      toast.success(t('step2.successMsg'));
       void navigate(AppRoutes.TASKS);
       setIsLoading(false);
       return true;

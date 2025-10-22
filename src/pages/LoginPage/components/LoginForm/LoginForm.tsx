@@ -16,10 +16,11 @@ import {
   Typography,
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import { SignInLocalSchema, type SignInLocalDto } from 'api';
-import { useState, type FC } from 'react';
+import { getSignInLocalSchema, type SignInLocalDto } from 'api';
+import { useMemo, useState, type FC } from 'react';
 import { AppRoutes } from 'routes';
 import { FormDefaultValues } from './config';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   onSubmit: (authData: SignInLocalDto) => Promise<boolean>;
@@ -27,6 +28,10 @@ interface Props {
 }
 
 export const LoginForm: FC<Props> = ({ onSubmit, isLoading }) => {
+  const { t } = useTranslation('loginPage');
+
+  const signInLocalSchema = useMemo(() => getSignInLocalSchema(t), [t]);
+
   const {
     control,
     handleSubmit,
@@ -34,7 +39,7 @@ export const LoginForm: FC<Props> = ({ onSubmit, isLoading }) => {
     reset,
     clearErrors,
   } = useForm<SignInLocalDto>({
-    resolver: zodResolver(SignInLocalSchema),
+    resolver: zodResolver(signInLocalSchema),
     defaultValues: FormDefaultValues,
     reValidateMode: 'onSubmit',
   });
@@ -53,16 +58,16 @@ export const LoginForm: FC<Props> = ({ onSubmit, isLoading }) => {
     <Box component="form" onSubmit={(e) => void handleFormSubmit(e)} noValidate>
       <Stack spacing={2}>
         <Typography variant="h5" component="h1" gutterBottom>
-          Welcome back
+          {t('title')}
         </Typography>
-        <Link href={AppRoutes.REGISTER}>Don't have an account? Sign up.</Link>
+        <Link href={AppRoutes.REGISTER}>{t('link')}</Link>
         <Controller
           control={control}
           name="email"
           render={({ field }) => (
             <TextField
               {...field}
-              label="Email"
+              label={t('labels.email')}
               fullWidth
               required
               autoComplete="email"
@@ -78,12 +83,12 @@ export const LoginForm: FC<Props> = ({ onSubmit, isLoading }) => {
           control={control}
           render={({ field }) => (
             <FormControl fullWidth required variant="outlined" error={!!errors.password}>
-              <InputLabel htmlFor="password-field">Password</InputLabel>
+              <InputLabel htmlFor="password-field">{t('labels.password')}</InputLabel>
               <OutlinedInput
                 {...field}
                 id="password-field"
                 type={showPassword ? 'text' : 'password'}
-                label="Password"
+                label={t('labels.password')}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton onClick={handleClickShowPassword} edge="end">
@@ -104,7 +109,7 @@ export const LoginForm: FC<Props> = ({ onSubmit, isLoading }) => {
           disabled={isLoading}
           sx={{ mt: 2, py: 1.5 }}
         >
-          {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Continue'}
+          {isLoading ? <CircularProgress size={24} color="inherit" /> : t('button')}
         </Button>
       </Stack>
     </Box>

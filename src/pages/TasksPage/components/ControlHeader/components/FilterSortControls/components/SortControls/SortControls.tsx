@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { SortOrder, type SortByValues, type SortOrderValues } from 'pages/TasksPage/types';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   sortBy: SortByValues;
@@ -22,27 +23,29 @@ interface Props {
 }
 
 export const SortControls: FC<Props> = ({ sortBy, setSortBy, sortOrder, setSortOrder }) => {
+  const { t } = useTranslation('tasksPage');
+
   const isAscSortOrder = sortOrder === SortOrder.ASC;
 
   return (
     <>
-      <Typography variant="subtitle1">Sorting</Typography>
+      <Typography variant="subtitle1">{t('header.sort.title')}</Typography>
       <Box sx={{ display: 'flex', gap: 1 }}>
         <FormControl size="small" fullWidth>
-          <InputLabel>Field</InputLabel>
+          <InputLabel>{t('header.sort.field')}</InputLabel>
           <Select
             value={sortBy}
-            label="Field"
+            label={t('header.sort.field')}
             onChange={(e) => setSortBy(e.target.value as SortByValues)}
           >
             {SortOptions.map((opt) => (
               <MenuItem key={opt.value} value={opt.value}>
-                {opt.label}
+                {t(opt.label)}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
-        <Tooltip title={isAscSortOrder ? 'Ascending' : 'Descending'}>
+        <Tooltip title={isAscSortOrder ? t('header.sort.asc') : t('header.sort.desc')}>
           <IconButton onClick={() => setSortOrder(isAscSortOrder ? SortOrder.DESC : SortOrder.ASC)}>
             {isAscSortOrder ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
           </IconButton>

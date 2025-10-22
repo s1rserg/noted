@@ -18,10 +18,11 @@ import {
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { type SignUpLocalDto } from 'api';
-import { useState, type FC } from 'react';
-import { SignUpFormSchema } from './schemas';
+import { useMemo, useState, type FC } from 'react';
+import { getSignUpFormSchema } from './schemas';
 import type { SignUpFormInput } from './types';
 import { AppRoutes } from 'routes';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   onSubmit: (authData: SignUpLocalDto) => Promise<boolean>;
@@ -29,6 +30,9 @@ interface Props {
 }
 
 export const Step1Form: FC<Props> = ({ onSubmit, isLoading }) => {
+  const { t } = useTranslation('registerPage');
+  const signUpFormSchema = useMemo(() => getSignUpFormSchema(t), [t]);
+
   const {
     control,
     handleSubmit,
@@ -36,7 +40,7 @@ export const Step1Form: FC<Props> = ({ onSubmit, isLoading }) => {
     reset,
     clearErrors,
   } = useForm<SignUpFormInput>({
-    resolver: zodResolver(SignUpFormSchema),
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: Step1DefaultValues,
     reValidateMode: 'onSubmit',
   });
@@ -56,16 +60,16 @@ export const Step1Form: FC<Props> = ({ onSubmit, isLoading }) => {
     <Box component="form" onSubmit={(e) => void handleFormSubmit(e)} noValidate>
       <Stack spacing={2}>
         <Typography variant="h5" component="h1" gutterBottom>
-          Create Account
+          {t('step1.title')}
         </Typography>
-        <Link href={AppRoutes.LOGIN}>Already have an account? Sign in.</Link>
+        <Link href={AppRoutes.LOGIN}>{t('step1.link')}</Link>
         <Controller
           control={control}
           name="email"
           render={({ field }) => (
             <TextField
               {...field}
-              label="Email"
+              label={t('step1.labels.email')}
               fullWidth
               required
               autoComplete="email"
@@ -81,12 +85,12 @@ export const Step1Form: FC<Props> = ({ onSubmit, isLoading }) => {
           control={control}
           render={({ field }) => (
             <FormControl fullWidth required variant="outlined" error={!!errors.password}>
-              <InputLabel htmlFor="password-field">Password</InputLabel>
+              <InputLabel htmlFor="password-field">{t('step1.labels.password')}</InputLabel>
               <OutlinedInput
                 {...field}
                 id="password-field"
                 type={showPassword ? 'text' : 'password'}
-                label="Password"
+                label={t('step1.labels.password')}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton onClick={handleClickShowPassword} edge="end">
@@ -105,12 +109,14 @@ export const Step1Form: FC<Props> = ({ onSubmit, isLoading }) => {
           control={control}
           render={({ field }) => (
             <FormControl fullWidth required variant="outlined" error={!!errors.confirmPassword}>
-              <InputLabel htmlFor="confirm-password-field">Confirm Password</InputLabel>
+              <InputLabel htmlFor="confirm-password-field">
+                {t('step1.labels.confirmPassword')}
+              </InputLabel>
               <OutlinedInput
                 {...field}
                 id="confirm-password-field"
                 type={showPassword ? 'text' : 'password'}
-                label="Confirm Password"
+                label={t('step1.labels.confirmPassword')}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton onClick={handleClickShowPassword} edge="end">
@@ -133,7 +139,7 @@ export const Step1Form: FC<Props> = ({ onSubmit, isLoading }) => {
           disabled={isLoading}
           sx={{ mt: 2, py: 1.5 }}
         >
-          {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Continue'}
+          {isLoading ? <CircularProgress size={24} color="inherit" /> : t('step1.button')}
         </Button>
       </Stack>
     </Box>

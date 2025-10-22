@@ -1,12 +1,19 @@
 import { z } from 'zod';
+import type { TFunction } from 'i18next';
 
-export const CreateUserSchema = z.strictObject({
-  email: z.email('Email is not valid'),
-  name: z.string().min(2, 'Min name length is 2').optional(),
-  surname: z.string().min(2, 'Min surname length is 2').optional(),
-  birthday: z.coerce.date().optional(),
-});
+export const UpdateUserSchemaBase = z
+  .strictObject({
+    name: z.string().optional(),
+    surname: z.string().optional(),
+    birthday: z.string().optional(),
+  })
+  .partial();
 
-export const UpdateUserSchema = CreateUserSchema.omit({
-  email: true,
-}).partial();
+export const getUpdateUserSchema = (t: TFunction) =>
+  z
+    .strictObject({
+      name: z.string().min(2, t('validation.nameMin')).optional(),
+      surname: z.string().min(2, t('validation.surnameMin')).optional(),
+      birthday: z.coerce.date().optional(),
+    })
+    .partial();
