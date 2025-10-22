@@ -7,7 +7,9 @@
       "password": "Password",
       "confirmPassword": "Confirm Password"
     },
-    "button": "Continue",
+    "buttons": {
+      "continue": "Continue"
+    },
     "successMsg": "Account created successfully!"
   },
   "step2": {

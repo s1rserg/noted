@@ -19,6 +19,7 @@ import {
 import { useEffect, useMemo, type FC } from 'react';
 import { type CreateTaskFormData } from './types';
 import { useTranslation } from 'react-i18next';
+import { FormInput } from 'components/FormInput';
 
 interface AddTaskModalProps {
   open: boolean;
@@ -58,55 +59,37 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
     <CommonModal open={open} handleClose={handleClose} title={t('add.title')}>
       <Box component="form" onSubmit={(e) => void handleFormSubmit(e)}>
         <DialogContent>
-          <Controller
+          <FormInput
             control={control}
+            clearErrors={clearErrors}
             name="title"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label={t('add.labels.title')}
-                fullWidth
-                margin="normal"
-                error={!!errors.title}
-                helperText={errors.title?.message}
-                onFocus={() => clearErrors('title')}
-              />
-            )}
+            label={t('add.labels.title')}
+            fullWidth
+            margin="normal"
+            helperText={t(errors.title?.message || '')}
           />
-          <Controller
+          <FormInput
             control={control}
+            clearErrors={clearErrors}
             name="description"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label={t('add.labels.description')}
-                fullWidth
-                multiline
-                margin="normal"
-                error={!!errors.description}
-                helperText={errors.description?.message}
-                onFocus={() => clearErrors('description')}
-              />
-            )}
+            label={t('add.labels.description')}
+            fullWidth
+            multiline
+            margin="normal"
+            helperText={t(errors.description?.message || '')}
           />
-          <Controller
+          <FormInput
             control={control}
+            clearErrors={clearErrors}
             name="deadline"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label={t('add.labels.deadline')}
-                type="date"
-                fullWidth
-                margin="normal"
-                error={!!errors.deadline}
-                helperText={errors.deadline?.message}
-                onFocus={() => clearErrors('deadline')}
-                slotProps={{
-                  inputLabel: { shrink: true },
-                }}
-              />
-            )}
+            label={t('add.labels.deadline')}
+            type="date"
+            fullWidth
+            margin="normal"
+            slotProps={{
+              inputLabel: { shrink: true },
+            }}
+            helperText={t(errors.deadline?.message || '')}
           />
           <Controller
             control={control}

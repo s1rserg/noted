@@ -1,8 +1,10 @@
 {
-  "changeLanguage": "Change language to {{lang}}",
-  "theme": "Toggle theme",
   "hello": "Hello",
   "updateProfile": "Please, update your profile.",
-  "profile": "Profile",
-  "logout": "Logout"
+  "buttons": {
+    "changeLanguage": "Change language to {{lang}}",
+    "theme": "Toggle theme",
+    "profile": "Profile",
+    "logout": "Logout"
+  }
 }

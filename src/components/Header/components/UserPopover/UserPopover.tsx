@@ -48,7 +48,7 @@ export const UserPopover: FC = () => {
   };
   return (
     <>
-      <Tooltip title={t('profile')}>
+      <Tooltip title={t('buttons.profile')}>
         <span>
           <IconButton onClick={handleClick} disabled={!user}>
             <Badge variant="dot" color="error" overlap="circular" invisible={!emptyProfile}>
@@ -83,7 +83,7 @@ export const UserPopover: FC = () => {
               <Divider />
 
               <Button variant="outlined" fullWidth onClick={handleClickUpdateProfile}>
-                {t('profile')}
+                {t('buttons.profile')}
               </Button>
 
               <Button
@@ -92,7 +92,7 @@ export const UserPopover: FC = () => {
                 fullWidth
                 onClick={() => void handleLogout()}
               >
-                {t('logout')}
+                {t('buttons.logout')}
               </Button>
             </Stack>
           )}

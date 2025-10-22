@@ -5,7 +5,9 @@
     "email": "Email",
     "password": "Password"
   },
-  "button": "Continue",
+  "buttons": {
+    "continue": "Continue"
+  },
   "validation": {
     "email": "Email is not valid",
     "passwordMin": "Min password length is 6"

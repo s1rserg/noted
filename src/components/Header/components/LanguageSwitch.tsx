@@ -21,7 +21,7 @@ export const LanguageSwitch: FC = () => {
     void i18n.changeLanguage(nextLanguage);
   };
 
-  const tooltipTitle = t('changeLanguage', {
+  const tooltipTitle = t('buttons.changeLanguage', {
     lang: nextLanguageLabel,
   });
 

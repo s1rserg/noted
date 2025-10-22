@@ -7,7 +7,9 @@
       "password": "Пароль",
       "confirmPassword": "Підтвердіть пароль"
     },
-    "button": "Продовжити",
+    "buttons": {
+      "continue": "Продовжити"
+    },
     "successMsg": "Акаунт успішно створено!"
   },
   "step2": {

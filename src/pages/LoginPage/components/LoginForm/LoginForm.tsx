@@ -1,26 +1,13 @@
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  Link,
-  OutlinedInput,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
-import { getSignInLocalSchema, type SignInLocalDto } from 'api';
-import { useMemo, useState, type FC } from 'react';
+import { Box, Button, CircularProgress, Link, Stack, Typography } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { SignInLocalSchema, type SignInLocalDto } from 'api';
+import { type FC } from 'react';
 import { AppRoutes } from 'routes';
 import { FormDefaultValues } from './config';
 import { useTranslation } from 'react-i18next';
+import { FormInput } from 'components/FormInput';
+import { PasswordInput } from 'components/PasswordInput';
 
 interface Props {
   onSubmit: (authData: SignInLocalDto) => Promise<boolean>;
@@ -30,8 +17,6 @@ interface Props {
 export const LoginForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { t } = useTranslation('loginPage');
 
-  const signInLocalSchema = useMemo(() => getSignInLocalSchema(t), [t]);
-
   const {
     control,
     handleSubmit,
@@ -39,14 +24,10 @@ export const LoginForm: FC<Props> = ({ onSubmit, isLoading }) => {
     reset,
     clearErrors,
   } = useForm<SignInLocalDto>({
-    resolver: zodResolver(signInLocalSchema),
+    resolver: zodResolver(SignInLocalSchema),
     defaultValues: FormDefaultValues,
     reValidateMode: 'onSubmit',
   });
-
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleFormSubmit = handleSubmit(async (data) => {
     if (await onSubmit(data)) {
@@ -61,47 +42,29 @@ export const LoginForm: FC<Props> = ({ onSubmit, isLoading }) => {
           {t('title')}
         </Typography>
         <Link href={AppRoutes.REGISTER}>{t('link')}</Link>
-        <Controller
+        <FormInput
           control={control}
+          clearErrors={clearErrors}
           name="email"
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label={t('labels.email')}
-              fullWidth
-              required
-              autoComplete="email"
-              margin="normal"
-              error={!!errors.email}
-              helperText={errors.email?.message}
-              onFocus={() => clearErrors('email')}
-            />
-          )}
+          label={t('labels.email')}
+          fullWidth
+          required
+          margin="normal"
+          autoComplete="email"
+          errorMsg={t(errors.email?.message || '')}
         />
-        <Controller
-          name="password"
+
+        <PasswordInput
           control={control}
-          render={({ field }) => (
-            <FormControl fullWidth required variant="outlined" error={!!errors.password}>
-              <InputLabel htmlFor="password-field">{t('labels.password')}</InputLabel>
-              <OutlinedInput
-                {...field}
-                id="password-field"
-                type={showPassword ? 'text' : 'password'}
-                label={t('labels.password')}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton onClick={handleClickShowPassword} edge="end">
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                onFocus={() => clearErrors('password')}
-              />
-              {errors.password && <FormHelperText>{errors.password.message}</FormHelperText>}
-            </FormControl>
-          )}
+          clearErrors={clearErrors}
+          name="password"
+          label={t('labels.password')}
+          fullWidth
+          required
+          margin="normal"
+          errorMsg={t(errors.password?.message || '')}
         />
+
         <Button
           type="submit"
           fullWidth
@@ -109,7 +72,7 @@ export const LoginForm: FC<Props> = ({ onSubmit, isLoading }) => {
           disabled={isLoading}
           sx={{ mt: 2, py: 1.5 }}
         >
-          {isLoading ? <CircularProgress size={24} color="inherit" /> : t('button')}
+          {isLoading ? <CircularProgress size={24} color="inherit" /> : t('buttons.continue')}
         </Button>
       </Stack>
     </Box>

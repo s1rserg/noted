@@ -1,19 +1,9 @@
 import { z } from 'zod';
-import type { TFunction } from 'i18next';
 
-export const UpdateUserSchemaBase = z
+export const UpdateUserSchema = z
   .strictObject({
-    name: z.string().optional(),
-    surname: z.string().optional(),
-    birthday: z.string().optional(),
+    name: z.string().min(2, 'validation.nameMin').optional(),
+    surname: z.string().min(2, 'validation.surnameMin').optional(),
+    birthday: z.coerce.date().optional(),
   })
   .partial();
-
-export const getUpdateUserSchema = (t: TFunction) =>
-  z
-    .strictObject({
-      name: z.string().min(2, t('validation.nameMin')).optional(),
-      surname: z.string().min(2, t('validation.surnameMin')).optional(),
-      birthday: z.coerce.date().optional(),
-    })
-    .partial();

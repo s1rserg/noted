@@ -25,8 +25,7 @@ void i18next
 
     returnEmptyString: false,
     returnNull: false,
-    ns: ['common'],
-    defaultNS: 'common',
+    ns: ['header', 'loginPage', 'registerPage', 'tasksPage'],
     detection: {
       order: ['localStorage', 'cookie'],
       lookupLocalStorage: APP_LANGUAGE_STORAGE_KEY,

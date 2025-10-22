@@ -12,7 +12,7 @@ export const ThemeSwitch: FC = () => {
   const isDark = mode === 'dark';
 
   return (
-    <Tooltip title={t('theme')}>
+    <Tooltip title={t('buttons.theme')}>
       <IconButton onClick={() => setMode(isDark ? 'light' : 'dark')}>
         {isDark ? <LightModeIcon /> : <DarkModeIcon color="action" />}
       </IconButton>

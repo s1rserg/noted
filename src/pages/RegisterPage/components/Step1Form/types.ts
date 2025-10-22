@@ -1,4 +1,4 @@
 import type { input } from 'zod';
-import type { SignUpFormSchemaBase } from './schemas';
+import type { SignUpFormSchema } from './schemas';
 
-export type SignUpFormInput = input<typeof SignUpFormSchemaBase>;
+export type SignUpFormInput = input<typeof SignUpFormSchema>;
