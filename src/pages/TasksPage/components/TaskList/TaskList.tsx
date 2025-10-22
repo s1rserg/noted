@@ -7,6 +7,7 @@ import { memo, useState, type FC, type ReactNode } from 'react';
 import type { ViewModeValues } from '../../types';
 import type { Task } from 'types/task';
 import type { Nullable } from 'types/utils';
+import { useTranslation } from 'react-i18next';
 
 interface TaskListProps {
   tasks: Task[];
@@ -18,6 +19,7 @@ interface TaskListProps {
 
 export const TaskList: FC<TaskListProps> = memo(
   ({ tasks, viewMode, onCompleteTask, onDeleteTask, isLoading }) => {
+    const { t } = useTranslation('tasksPage');
     const {
       isOpen: isTaskItemModalOpen,
       openModal: openTaskItemModal,
@@ -47,7 +49,7 @@ export const TaskList: FC<TaskListProps> = memo(
     };
 
     if (tasks.length === 0) {
-      return <Box sx={{ textAlign: 'center', p: 4 }}>There are no tasks to show.</Box>;
+      return <Box sx={{ textAlign: 'center', p: 4 }}>{t('list.emptyMsg')}</Box>;
     }
 
     return (
@@ -57,7 +59,7 @@ export const TaskList: FC<TaskListProps> = memo(
           <CommonModal
             open={isTaskItemModalOpen}
             handleClose={closeTaskItemModal}
-            title="Task Details"
+            title={t('list.detailsTitle')}
           >
             <TaskCard task={selectedTask} onComplete={onCompleteTask} onDelete={onDeleteTask} />
           </CommonModal>

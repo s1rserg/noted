@@ -15,8 +15,11 @@ import type { Nullable } from 'types/utils';
 import { useUserStore } from 'store';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from 'routes';
+import { useTranslation } from 'react-i18next';
 
 export const UserPopover: FC = () => {
+  const { t } = useTranslation('header');
+
   const user = useUserStore((state) => state.user);
   const logout = useUserStore((state) => state.logout);
 
@@ -45,7 +48,7 @@ export const UserPopover: FC = () => {
   };
   return (
     <>
-      <Tooltip title="Profile">
+      <Tooltip title={t('buttons.profile')}>
         <span>
           <IconButton onClick={handleClick} disabled={!user}>
             <Badge variant="dot" color="error" overlap="circular" invisible={!emptyProfile}>
@@ -67,12 +70,12 @@ export const UserPopover: FC = () => {
             <Stack spacing={1}>
               <Box>
                 <Typography variant="subtitle1" component="p">
-                  Hello, {user.name || user.email}
+                  {t('hello')}, {user.name || user.email}
                 </Typography>
 
                 {emptyProfile && (
                   <Typography variant="subtitle1" component="p">
-                    Please, update your profile.
+                    {t('updateProfile')}
                   </Typography>
                 )}
               </Box>
@@ -80,7 +83,7 @@ export const UserPopover: FC = () => {
               <Divider />
 
               <Button variant="outlined" fullWidth onClick={handleClickUpdateProfile}>
-                Update Profile
+                {t('buttons.profile')}
               </Button>
 
               <Button
@@ -89,7 +92,7 @@ export const UserPopover: FC = () => {
                 fullWidth
                 onClick={() => void handleLogout()}
               >
-                Logout
+                {t('buttons.logout')}
               </Button>
             </Stack>
           )}

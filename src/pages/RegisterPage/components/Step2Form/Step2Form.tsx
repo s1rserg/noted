@@ -1,9 +1,11 @@
-import { Box, Button, CircularProgress, Stack, TextField, Typography } from '@mui/material';
-import { Controller, useForm, type Resolver } from 'react-hook-form';
+import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
+import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdateUserSchema, type UpdateUserDto } from 'api';
-import type { FC } from 'react';
+import { type FC } from 'react';
 import { Step2DefaultValues } from './config';
+import { useTranslation } from 'react-i18next';
+import { FormInput } from 'components/FormInput';
 
 interface Props {
   onSubmit: (updateData: UpdateUserDto) => Promise<boolean>;
@@ -12,12 +14,14 @@ interface Props {
 }
 
 export const Step2Form: FC<Props> = ({ onSubmit, onSkip, isLoading }) => {
+  const { t } = useTranslation('registerPage');
+
   const {
     control,
     handleSubmit,
-    formState: { errors },
     reset,
     clearErrors,
+    formState: { errors },
   } = useForm<UpdateUserDto>({
     resolver: zodResolver(UpdateUserSchema) as Resolver<UpdateUserDto>,
     defaultValues: Step2DefaultValues,
@@ -41,67 +45,43 @@ export const Step2Form: FC<Props> = ({ onSubmit, onSkip, isLoading }) => {
     <Box component="form" onSubmit={(e) => void handleFormSubmit(e)} noValidate>
       <Stack spacing={2}>
         <Typography variant="h5" component="h1" gutterBottom>
-          Additional Info
+          {t('step2.title')}
         </Typography>
 
-        <Controller
+        <FormInput
           control={control}
+          clearErrors={clearErrors}
           name="name"
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Name"
-              fullWidth
-              autoComplete="given-name"
-              margin="normal"
-              error={!!errors.name}
-              helperText={errors.name?.message}
-              onFocus={() => clearErrors('name')}
-            />
-          )}
+          label={t('step2.labels.name')}
+          fullWidth
+          autoComplete="given-name"
+          margin="normal"
+          errorMsg={t(errors['name']?.message || '')}
         />
 
-        <Controller
+        <FormInput
           control={control}
+          clearErrors={clearErrors}
           name="surname"
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Surname"
-              fullWidth
-              autoComplete="family-name"
-              margin="normal"
-              error={!!errors.surname}
-              helperText={errors.surname?.message}
-              onFocus={() => clearErrors('surname')}
-            />
-          )}
+          label={t('step2.labels.surname')}
+          fullWidth
+          autoComplete="family-name"
+          margin="normal"
+          errorMsg={t(errors['surname']?.message || '')}
         />
 
-        <Controller
+        <FormInput
           control={control}
+          clearErrors={clearErrors}
           name="birthday"
-          render={({ field }) => (
-            <TextField
-              onBlur={field.onBlur}
-              ref={field.ref}
-              name={field.name}
-              label="Birthday"
-              type="date"
-              fullWidth
-              margin="normal"
-              error={!!errors.birthday}
-              helperText={errors.birthday?.message}
-              slotProps={{
-                inputLabel: { shrink: true },
-              }}
-              value={field.value || ''}
-              onChange={(e) => {
-                field.onChange(e.target.value);
-              }}
-              onFocus={() => clearErrors('birthday')}
-            />
-          )}
+          label={t('step2.labels.birthday')}
+          type="date"
+          fullWidth
+          margin="normal"
+          slotProps={{
+            inputLabel: { shrink: true },
+          }}
+          errorMsg={t(errors['birthday']?.message || '')}
         />
 
         <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
@@ -113,7 +93,7 @@ export const Step2Form: FC<Props> = ({ onSubmit, onSkip, isLoading }) => {
             disabled={isLoading}
             sx={{ mt: 2, py: 1.5 }}
           >
-            Skip
+            {t('step2.buttons.skip')}
           </Button>
           <Button
             type="submit"
@@ -122,7 +102,7 @@ export const Step2Form: FC<Props> = ({ onSubmit, onSkip, isLoading }) => {
             disabled={isLoading}
             sx={{ mt: 2, py: 1.5 }}
           >
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Save'}
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : t('step2.buttons.save')}
           </Button>
         </Stack>
       </Stack>

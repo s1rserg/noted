@@ -1,12 +1,9 @@
 import { z } from 'zod';
 
-export const CreateUserSchema = z.strictObject({
-  email: z.email('Email is not valid'),
-  name: z.string().min(2, 'Min name length is 2').optional(),
-  surname: z.string().min(2, 'Min surname length is 2').optional(),
-  birthday: z.coerce.date().optional(),
-});
-
-export const UpdateUserSchema = CreateUserSchema.omit({
-  email: true,
-}).partial();
+export const UpdateUserSchema = z
+  .strictObject({
+    name: z.string().min(2, 'validation.nameMin').optional(),
+    surname: z.string().min(2, 'validation.surnameMin').optional(),
+    birthday: z.coerce.date().optional(),
+  })
+  .partial();

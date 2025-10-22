@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { type FC } from 'react';
 import { TaskStatus, type Task } from 'types/task';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   task: Task;
@@ -26,6 +27,7 @@ interface Props {
 }
 
 export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
+  const { t } = useTranslation('tasksPage');
   const navigate = useNavigate();
 
   const {
@@ -64,7 +66,7 @@ export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
 
         <Stack direction="row" spacing={1}>
           <StatusChip status={task.status} />
-          <Chip label={TaskPriorityLabels[task.priority]} sx={PriorityStyles[task.priority]} />
+          <Chip label={t(TaskPriorityLabels[task.priority])} sx={PriorityStyles[task.priority]} />
           {task.deadline && <Chip label={task.deadline} />}
         </Stack>
         <Stack direction="row" spacing={1} mt={1}>
@@ -75,24 +77,24 @@ export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
       </CardContent>
 
       <Box sx={ButtonsStyles}>
-        <Tooltip title="Edit">
+        <Tooltip title={t('task.edit')}>
           <IconButton onClick={() => handleEdit(task.id)}>
             <Edit />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Details">
+        <Tooltip title={t('task.details')}>
           <IconButton onClick={() => handleDetails(task.id)}>
             <Info />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Complete">
+        <Tooltip title={t('task.complete')}>
           <span>
             <IconButton onClick={openCompleteModal} disabled={isCompleted}>
               <CheckCircle />
             </IconButton>
           </span>
         </Tooltip>
-        <Tooltip title="Delete">
+        <Tooltip title={t('task.delete')}>
           <IconButton onClick={openDeleteModal}>
             <Delete />
           </IconButton>
@@ -102,21 +104,21 @@ export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
         open={isCompleteModalOpen}
         handleClose={closeCompleteModal}
         onConfirm={() => onComplete(task.id)}
-        title="Confirm Completion"
-        confirmText="Yes, Complete"
-        cancelText="Cancel"
+        title={t('complete.title')}
+        confirmText={t('complete.confirm')}
+        cancelText={t('complete.cancel')}
       >
-        Are you sure you want to mark this task as complete?
+        {t('complete.description')}
       </ConfirmModal>
       <ConfirmModal
         open={isDeleteModalOpen}
         handleClose={closeDeleteModal}
         onConfirm={() => onDelete(task.id)}
-        title="Confirm Deletion"
-        confirmText="Yes, Delete"
-        cancelText="No, Keep It"
+        title={t('delete.title')}
+        confirmText={t('delete.confirm')}
+        cancelText={t('delete.cancel')}
       >
-        Are you sure you want to delete this item? This action cannot be undone.
+        {t('delete.description')}
       </ConfirmModal>
     </Card>
   );

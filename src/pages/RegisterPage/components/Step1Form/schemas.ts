@@ -1,9 +1,9 @@
-import { SignUpLocalSchema } from 'api';
-import z from 'zod';
+import { z } from 'zod';
+import { SignInLocalSchema } from 'api';
 
-export const SignUpFormSchema = SignUpLocalSchema.extend({
-  confirmPassword: z.string('Confirm password is required'),
+export const SignUpFormSchema = SignInLocalSchema.extend({
+  confirmPassword: z.string().min(1, 'validation.confirmPasswordRequired'),
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
+  message: 'validation.passwordsDontMatch',
   path: ['confirmPassword'],
 });
