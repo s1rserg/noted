@@ -1,4 +1,4 @@
-import { SortBy } from '../../../../../../types';
+import { SortBy } from 'api';
 
 export const SortOptions = [
   { value: SortBy.CREATED_AT, label: 'header.sort.options.created_at' },

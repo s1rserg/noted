@@ -1,8 +1,8 @@
 import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { PriorityFilterOptions, StatusFilterOptions } from './config';
 import type { FC } from 'react';
-import type { PriorityFilterValues, StatusFilterValues } from '../../../../../../types';
 import { useTranslation } from 'react-i18next';
+import type { StatusFilterValues, PriorityFilterValues } from 'api';
 
 interface Props {
   statusFilter: StatusFilterValues;

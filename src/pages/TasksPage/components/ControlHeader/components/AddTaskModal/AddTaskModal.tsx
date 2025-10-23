@@ -1,13 +1,13 @@
 import { CommonModal } from 'components/CommonModal';
 import { Controller, useForm } from 'react-hook-form';
 import { CreateTaskDefaultValues, TaskPriorityValues, TaskStatusValues } from './config';
-import { getCreateTaskSchema } from './schema';
 import { TaskPriorityLabels, TaskStatusLabels } from '../../../../config';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Autocomplete,
   Box,
   Button,
+  CircularProgress,
   DialogActions,
   DialogContent,
   FormControl,
@@ -16,20 +16,20 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { useEffect, useMemo, type FC } from 'react';
-import { type CreateTaskFormData } from './types';
+import { useEffect, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormInput } from 'components/FormInput';
+import { CreateTaskSchema, type CreateTaskDto } from 'api';
 
 interface AddTaskModalProps {
   open: boolean;
   handleClose: () => void;
-  onSubmit: (taskData: CreateTaskFormData) => void;
+  onSubmit: (taskData: CreateTaskDto) => Promise<void>;
+  isLoading: boolean;
 }
 
-export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmit }) => {
+export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmit, isLoading }) => {
   const { t } = useTranslation('tasksPage');
-  const createTaskSchema = useMemo(() => getCreateTaskSchema(t), [t]);
 
   const {
     control,
@@ -37,15 +37,14 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
     formState: { errors },
     reset,
     clearErrors,
-  } = useForm<CreateTaskFormData>({
-    resolver: zodResolver(createTaskSchema),
+  } = useForm<CreateTaskDto>({
+    resolver: zodResolver(CreateTaskSchema),
     defaultValues: CreateTaskDefaultValues,
     reValidateMode: 'onSubmit',
   });
 
-  const handleFormSubmit = handleSubmit((data: CreateTaskFormData) => {
-    onSubmit(data);
-    reset();
+  const handleFormSubmit = handleSubmit((data: CreateTaskDto) => {
+    void onSubmit(data);
   });
 
   useEffect(() => {
@@ -165,8 +164,13 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
           <Button onClick={handleClose} variant="outlined">
             {t('add.buttons.cancel')}
           </Button>
-          <Button type="submit" variant="contained">
-            {t('add.buttons.create')}
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={isLoading}
+            startIcon={isLoading ? <CircularProgress size={20} /> : null}
+          >
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : t('add.buttons.create')}
           </Button>
         </DialogActions>
       </Box>

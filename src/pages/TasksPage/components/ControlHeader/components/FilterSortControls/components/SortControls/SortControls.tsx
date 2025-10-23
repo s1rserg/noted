@@ -11,9 +11,10 @@ import {
   Tooltip,
   IconButton,
 } from '@mui/material';
-import { SortOrder, type SortByValues, type SortOrderValues } from 'pages/TasksPage/types';
+import { type SortByValues, type SortOrderValues } from 'pages/TasksPage/types';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SortOrder } from 'api';
 
 interface Props {
   sortBy: SortByValues;

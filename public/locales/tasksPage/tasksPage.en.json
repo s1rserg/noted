@@ -58,6 +58,7 @@
   },
   "add": {
     "title": "Add new task",
+    "successMsg": "Task was added successfully.",
     "labels": {
       "title": "Title",
       "description": "Description",

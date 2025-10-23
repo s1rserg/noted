@@ -48,7 +48,7 @@ export const TaskList: FC<TaskListProps> = memo(
       ),
     };
 
-    if (tasks.length === 0) {
+    if (tasks.length === 0 && !isLoading) {
       return <Box sx={{ textAlign: 'center', p: 4 }}>{t('list.emptyMsg')}</Box>;
     }
 
