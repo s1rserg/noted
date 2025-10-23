@@ -4,8 +4,6 @@ import type { CreateTaskSchema } from './schemas';
 
 export type CreateTaskDto = ZodInfer<typeof CreateTaskSchema>;
 
-export const SORT_BY_FIELDS = ['createdAt', 'title', 'status', 'priority'] as const;
-
 export const SortBy = {
   CREATED_AT: 'createdAt',
   TITLE: 'title',
