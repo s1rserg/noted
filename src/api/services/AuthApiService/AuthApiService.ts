@@ -25,6 +25,14 @@ class AuthApiService {
       url: '/auth/sign-out',
     };
   }
+
+  public refresh(): AxiosRequestConfig {
+    return {
+      method: 'GET',
+      url: '/auth/refresh',
+      withCredentials: true,
+    };
+  }
 }
 
 export const authApiService = new AuthApiService();

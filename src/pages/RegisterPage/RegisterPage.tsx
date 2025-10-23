@@ -9,7 +9,7 @@ import {
   userApiService,
   type UpdateUserDto,
   type AuthResponse,
-  type ApiError,
+  handleApiError,
 } from 'api';
 import { AppRoutes } from 'routes';
 import { localStorageService } from 'utils/LocalStorageService';
@@ -36,8 +36,7 @@ export const RegisterPage: FC = () => {
       setIsLoading(false);
       return true;
     } catch (error) {
-      //TODO: replace this
-      toast.error((error as ApiError).response.data.message);
+      handleApiError(error);
 
       setIsLoading(false);
       return false;
@@ -55,8 +54,7 @@ export const RegisterPage: FC = () => {
       setIsLoading(false);
       return true;
     } catch (error) {
-      //TODO: replace this
-      toast.error((error as ApiError).response.data.message);
+      handleApiError(error);
 
       setIsLoading(false);
       return false;

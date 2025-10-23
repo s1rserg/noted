@@ -1,10 +1,9 @@
-import type { ApiError, User } from 'api';
-import { authApiService, httpClient, userApiService } from 'api';
+import type { User } from 'api';
+import { authApiService, handleApiError, httpClient, userApiService } from 'api';
 
 import type { Nullable } from 'types/utils';
 import { create } from 'zustand';
 import { localStorageService } from 'utils/LocalStorageService';
-import { toast } from 'react-toastify';
 
 interface UserState {
   user: Nullable<User>;
@@ -26,8 +25,7 @@ export const useUserStore = create<UserState>((set) => ({
       const { data } = await httpClient<User>(userApiService.fetchUser());
       set({ user: data });
     } catch (error) {
-      //TODO: replace this
-      toast.error((error as ApiError).response.data.message);
+      handleApiError(error);
     }
   },
 
@@ -35,8 +33,7 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       await httpClient(authApiService.signOut());
     } catch (error) {
-      //TODO: replace this
-      toast.error((error as ApiError).response.data.message);
+      handleApiError(error);
     } finally {
       localStorageService.deleteAccessToken();
       set({ user: null });

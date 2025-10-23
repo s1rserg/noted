@@ -1,11 +1,10 @@
-import { toast } from 'react-toastify';
 import { useState, type FC } from 'react';
 import {
   httpClient,
   authApiService,
   type AuthResponse,
-  type ApiError,
   type SignInLocalDto,
+  handleApiError,
 } from 'api';
 import { localStorageService } from 'utils/LocalStorageService';
 import { LoginForm } from './components';
@@ -35,8 +34,7 @@ export const LoginPage: FC = () => {
       setIsLoading(false);
       return true;
     } catch (error) {
-      //TODO: replace this
-      toast.error((error as ApiError).response.data.message);
+      handleApiError(error);
 
       setIsLoading(false);
       return false;
