@@ -6,48 +6,41 @@ import type { RetryableAxiosRequestConfig } from './types';
 import { useUserStore } from 'store';
 import { appRouter, AppRoutes } from 'routes';
 
-const createHttpClient = () => {
-  const instance = axios.create(ApiConfig);
+const httpClient = axios.create(ApiConfig);
 
-  instance.interceptors.request.use((config) => {
-    const accessToken = localStorageService.getAccessToken();
+httpClient.interceptors.request.use((config) => {
+  const accessToken = localStorageService.getAccessToken();
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
+});
 
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  });
+httpClient.interceptors.response.use(
+  (response: AxiosResponse) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as RetryableAxiosRequestConfig;
 
-  instance.interceptors.response.use(
-    (response: AxiosResponse) => {
-      return response;
-    },
-    async (error: AxiosError) => {
-      const originalRequest = error.config as RetryableAxiosRequestConfig;
+    if (error.response?.status === 401 && originalRequest && !originalRequest._isRetry) {
+      originalRequest._isRetry = true;
 
-      if (error.response?.status === 401 && originalRequest && !originalRequest._isRetry) {
-        originalRequest._isRetry = true;
-
-        try {
-          const refreshConfig = authApiService.refresh();
-          const response = await axios.request<AuthResponse>({
-            ...refreshConfig,
-            baseURL: ApiConfig.baseURL,
-          });
-          localStorageService.setAccessToken(response.data.accessToken);
-          return instance.request(originalRequest);
-        } catch (_e) {
-          localStorageService.deleteAccessToken();
-          useUserStore.getState().clearUser();
-          void appRouter.navigate(AppRoutes.LOGIN);
-        }
+      try {
+        const refreshConfig = authApiService.refresh();
+        const response = await axios.request<AuthResponse>({
+          ...refreshConfig,
+          baseURL: ApiConfig.baseURL,
+        });
+        localStorageService.setAccessToken(response.data.accessToken);
+        return httpClient.request(originalRequest);
+      } catch {
+        localStorageService.deleteAccessToken();
+        useUserStore.getState().clearUser();
+        void appRouter.navigate(AppRoutes.LOGIN);
       }
+    }
 
-      return Promise.reject(error);
-    },
-  );
+    return Promise.reject(error);
+  },
+);
 
-  return instance;
-};
-
-export const httpClient = createHttpClient();
+export { httpClient };
