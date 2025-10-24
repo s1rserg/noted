@@ -1,6 +1,7 @@
 import { Step1DefaultValues } from './config';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, CircularProgress, Link, Stack, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { type SignUpLocalDto } from 'api';
 import { type FC } from 'react';
@@ -44,7 +45,9 @@ export const Step1Form: FC<Props> = ({ onSubmit, isLoading }) => {
         <Typography variant="h5" component="h1" gutterBottom>
           {t('step1.title')}
         </Typography>
-        <Link href={AppRoutes.LOGIN}>{t('step1.link')}</Link>
+        <Box component={Link} to={AppRoutes.LOGIN} sx={{ color: 'primary.main' }}>
+          {t('step1.link')}
+        </Box>
         <FormInput
           control={control}
           clearErrors={clearErrors}

@@ -6,7 +6,9 @@ import type { RetryableAxiosRequestConfig } from './types';
 import { useUserStore } from 'store';
 import { appRouter, AppRoutes } from 'routes';
 
-const httpClient = axios.create(ApiConfig);
+export const httpClient = axios.create(ApiConfig);
+
+export const refreshClient = axios.create(ApiConfig);
 
 httpClient.interceptors.request.use((config) => {
   const accessToken = localStorageService.getAccessToken();
@@ -25,11 +27,8 @@ httpClient.interceptors.response.use(
       originalRequest._isRetry = true;
 
       try {
-        const refreshConfig = authApiService.refresh();
-        const response = await axios.request<AuthResponse>({
-          ...refreshConfig,
-          baseURL: ApiConfig.baseURL,
-        });
+        const response = await refreshClient<AuthResponse>(authApiService.refresh());
+
         localStorageService.setAccessToken(response.data.accessToken);
         return httpClient.request(originalRequest);
       } catch {
@@ -42,5 +41,3 @@ httpClient.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-export { httpClient };

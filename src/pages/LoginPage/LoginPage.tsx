@@ -11,6 +11,8 @@ import { LoginForm } from './components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AppRoutes } from 'routes';
 import type { LocationState } from './types';
+import { AuthProviderButton } from 'components/AuthProviderButton';
+import GoogleIcon from '@mui/icons-material/Google';
 
 export const LoginPage: FC = () => {
   const navigate = useNavigate();
@@ -44,6 +46,13 @@ export const LoginPage: FC = () => {
   return (
     <>
       <LoginForm onSubmit={handleLoginSubmit} isLoading={isLoading} />
+      <AuthProviderButton
+        fullWidth
+        text="Sign in with Google"
+        icon={<GoogleIcon />}
+        authUrlPath="/auth/google"
+        sx={{ mt: 2, py: 1.5 }}
+      />
     </>
   );
 };
