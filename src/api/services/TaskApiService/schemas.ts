@@ -22,3 +22,5 @@ export const CreateTaskSchema = z.object({
   status: z.enum(Object.values(TaskStatus)),
   tags: z.array(z.string()).optional(),
 });
+
+export const UpdateTaskSchema = z.strictObject({}).extend(CreateTaskSchema.shape).partial();

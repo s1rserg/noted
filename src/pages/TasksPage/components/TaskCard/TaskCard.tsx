@@ -22,11 +22,12 @@ import { useTranslation } from 'react-i18next';
 
 interface Props {
   task: Task;
-  onComplete: (id: Task['id']) => void;
-  onDelete: (id: Task['id']) => void;
+  onEdit: (task: Task) => void;
+  onComplete: (id: Task['id']) => Promise<void>;
+  onDelete: (id: Task['id']) => Promise<void>;
 }
 
-export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
+export const TaskCard: FC<Props> = ({ task, onEdit, onComplete, onDelete }) => {
   const { t } = useTranslation('tasksPage');
   const navigate = useNavigate();
 
@@ -44,8 +45,8 @@ export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
 
   const isCompleted = task.status === TaskStatus.COMPLETED;
 
-  const handleEdit = (id: Task['id']) => {
-    void navigate(generatePath(AppRoutes.EDIT_TASK, { id }));
+  const handleEdit = () => {
+    onEdit(task);
   };
 
   const handleDetails = (id: Task['id']) => {
@@ -78,7 +79,7 @@ export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
 
       <Box sx={ButtonsStyles}>
         <Tooltip title={t('task.edit')}>
-          <IconButton onClick={() => handleEdit(task.id)}>
+          <IconButton onClick={handleEdit}>
             <Edit />
           </IconButton>
         </Tooltip>
@@ -103,7 +104,7 @@ export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
       <ConfirmModal
         open={isCompleteModalOpen}
         handleClose={closeCompleteModal}
-        onConfirm={() => onComplete(task.id)}
+        onConfirm={() => void onComplete(task.id)}
         title={t('complete.title')}
         confirmText={t('complete.confirm')}
         cancelText={t('complete.cancel')}
@@ -113,7 +114,7 @@ export const TaskCard: FC<Props> = ({ task, onComplete, onDelete }) => {
       <ConfirmModal
         open={isDeleteModalOpen}
         handleClose={closeDeleteModal}
-        onConfirm={() => onDelete(task.id)}
+        onConfirm={() => void onDelete(task.id)}
         title={t('delete.title')}
         confirmText={t('delete.confirm')}
         cancelText={t('delete.cancel')}

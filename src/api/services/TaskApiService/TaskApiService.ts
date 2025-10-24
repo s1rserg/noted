@@ -1,5 +1,6 @@
 import type { AxiosRequestConfig } from 'axios';
-import type { CreateTaskDto, TaskQueryParameters } from './types';
+import type { CreateTaskDto, TaskQueryParameters, UpdateTaskDto } from './types';
+import type { Task } from 'types/task';
 
 class TaskApiService {
   public findAll(queryParams: TaskQueryParameters, signal?: AbortSignal): AxiosRequestConfig {
@@ -11,11 +12,34 @@ class TaskApiService {
     };
   }
 
+  public findOne(id: Task['id'], signal?: AbortSignal): AxiosRequestConfig {
+    return {
+      method: 'GET',
+      url: `/tasks/${id}`,
+      signal,
+    };
+  }
+
   public create(data: CreateTaskDto): AxiosRequestConfig {
     return {
       method: 'POST',
       url: '/tasks/',
       data,
+    };
+  }
+
+  public update(id: Task['id'], data: UpdateTaskDto): AxiosRequestConfig {
+    return {
+      method: 'PATCH',
+      url: `/tasks/${id}`,
+      data,
+    };
+  }
+
+  public delete(id: Task['id']): AxiosRequestConfig {
+    return {
+      method: 'DELETE',
+      url: `/tasks/${id}`,
     };
   }
 }

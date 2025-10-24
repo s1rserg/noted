@@ -1,7 +1,5 @@
 import { CommonModal } from 'components/CommonModal';
 import { Controller, useForm } from 'react-hook-form';
-import { CreateTaskDefaultValues, TaskPriorityValues, TaskStatusValues } from './config';
-import { TaskPriorityLabels, TaskStatusLabels } from '../../../../config';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Autocomplete,
@@ -20,26 +18,39 @@ import { useEffect, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormInput } from 'components/FormInput';
 import { CreateTaskSchema, type CreateTaskDto } from 'api';
+import type { Task } from 'types/task';
+import { CreateTaskDefaultValues, TaskPriorityValues, TaskStatusValues } from './config';
+import { TaskPriorityLabels, TaskStatusLabels } from '../../config';
+import type { Nullable } from 'types/utils';
 
-interface AddTaskModalProps {
+interface Props {
   open: boolean;
   handleClose: () => void;
   onSubmit: (taskData: CreateTaskDto) => Promise<void>;
   isLoading: boolean;
+  initialData?: Nullable<Task>;
 }
 
-export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmit, isLoading }) => {
+export const TaskFormModal: FC<Props> = ({
+  open,
+  handleClose,
+  onSubmit,
+  isLoading,
+  initialData,
+}) => {
   const { t } = useTranslation('tasksPage');
+
+  const isEditMode = !!initialData;
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     reset,
     clearErrors,
   } = useForm<CreateTaskDto>({
     resolver: zodResolver(CreateTaskSchema),
-    defaultValues: CreateTaskDefaultValues,
+    defaultValues: isEditMode ? initialData : CreateTaskDefaultValues,
     reValidateMode: 'onSubmit',
   });
 
@@ -49,13 +60,21 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
 
   useEffect(() => {
     if (open) {
-      reset();
+      if (isEditMode) {
+        reset(initialData);
+      } else {
+        reset(CreateTaskDefaultValues);
+      }
       clearErrors();
     }
-  }, [open, reset, clearErrors]);
+  }, [open, reset, clearErrors, initialData, isEditMode]);
 
   return (
-    <CommonModal open={open} handleClose={handleClose} title={t('add.title')}>
+    <CommonModal
+      open={open}
+      handleClose={handleClose}
+      title={isEditMode ? t('edit.title') : t('add.title')}
+    >
       <Box component="form" onSubmit={(e) => void handleFormSubmit(e)}>
         <DialogContent>
           <FormInput
@@ -160,17 +179,21 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({ open, handleClose, onSubmi
           />
         </DialogContent>
 
-        <DialogActions sx={{ display: 'flex', justifyContent: 'space-between', px: 3 }}>
+        <DialogActions sx={{ display: 'flex', justifyContent: 'space-between', px: 3, pb: 2 }}>
           <Button onClick={handleClose} variant="outlined">
-            {t('add.buttons.cancel')}
+            {t(isEditMode ? 'edit.buttons.cancel' : 'add.buttons.cancel')}
           </Button>
           <Button
             type="submit"
             variant="contained"
-            disabled={isLoading}
+            disabled={isLoading || (isEditMode && !isDirty)}
             startIcon={isLoading ? <CircularProgress size={20} /> : null}
           >
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : t('add.buttons.create')}
+            {isLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              t(isEditMode ? 'edit.buttons.save' : 'add.buttons.create')
+            )}
           </Button>
         </DialogActions>
       </Box>

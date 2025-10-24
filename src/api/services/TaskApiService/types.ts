@@ -1,8 +1,9 @@
 import type { TaskPriorityValues, TaskStatusValues } from 'types/task';
 import type { infer as ZodInfer } from 'zod';
-import type { CreateTaskSchema } from './schemas';
+import type { CreateTaskSchema, UpdateTaskSchema } from './schemas';
 
 export type CreateTaskDto = ZodInfer<typeof CreateTaskSchema>;
+export type UpdateTaskDto = ZodInfer<typeof UpdateTaskSchema>;
 
 export const SortBy = {
   CREATED_AT: 'createdAt',

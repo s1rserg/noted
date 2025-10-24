@@ -12,13 +12,14 @@ import { useTranslation } from 'react-i18next';
 interface TaskListProps {
   tasks: Task[];
   viewMode: ViewModeValues;
-  onCompleteTask: (id: Task['id']) => void;
-  onDeleteTask: (id: Task['id']) => void;
+  onEditTask: (task: Task) => void;
+  onCompleteTask: (id: Task['id']) => Promise<void>;
+  onDeleteTask: (id: Task['id']) => Promise<void>;
   isLoading: boolean;
 }
 
 export const TaskList: FC<TaskListProps> = memo(
-  ({ tasks, viewMode, onCompleteTask, onDeleteTask, isLoading }) => {
+  ({ tasks, viewMode, onEditTask, onCompleteTask, onDeleteTask, isLoading }) => {
     const { t } = useTranslation('tasksPage');
     const {
       isOpen: isTaskItemModalOpen,
@@ -35,11 +36,21 @@ export const TaskList: FC<TaskListProps> = memo(
       openTaskItemModal();
     };
 
+    const handleEditFromDetails = (task: Task) => {
+      closeTaskItemModal();
+      onEditTask(task);
+    };
+
     const viewMap: Record<ViewModeValues, ReactNode> = {
       grid: isLoading ? (
         <GridViewSkeleton />
       ) : (
-        <GridView tasks={tasks} onCompleteTask={onCompleteTask} onDeleteTask={onDeleteTask} />
+        <GridView
+          tasks={tasks}
+          onCompleteTask={onCompleteTask}
+          onDeleteTask={onDeleteTask}
+          onEditTask={onEditTask}
+        />
       ),
       list: isLoading ? (
         <ListViewSkeleton />
@@ -61,7 +72,12 @@ export const TaskList: FC<TaskListProps> = memo(
             handleClose={closeTaskItemModal}
             title={t('list.detailsTitle')}
           >
-            <TaskCard task={selectedTask} onComplete={onCompleteTask} onDelete={onDeleteTask} />
+            <TaskCard
+              task={selectedTask}
+              onComplete={onCompleteTask}
+              onDelete={onDeleteTask}
+              onEdit={handleEditFromDetails}
+            />
           </CommonModal>
         )}
       </Box>
