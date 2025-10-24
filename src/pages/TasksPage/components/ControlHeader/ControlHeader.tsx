@@ -7,23 +7,21 @@ import {
   SearchInput,
   ViewModeSwitch,
   FilterSortControls,
-  type CreateTaskFormData,
 } from './components';
 import { useEffect, useState, type FC } from 'react';
 import {
   FilterSortDefaults,
   QueryKeys,
-  type PriorityFilterValues,
   type SortByValues,
   type SortOrderValues,
-  type StatusFilterValues,
   type ViewModeValues,
 } from '../../types';
+import type { StatusFilterValues, PriorityFilterValues, CreateTaskDto } from 'api';
 
 interface Props {
   open: boolean;
   toggleOpen: () => void;
-  onAddTask: (taskData: CreateTaskFormData) => void;
+  onAddTask: (taskData: CreateTaskDto) => Promise<boolean>;
   viewMode: ViewModeValues;
   toggleViewMode: () => void;
 }
@@ -55,12 +53,20 @@ export const ControlHeader: FC<Props> = ({
     FilterSortDefaults.FILTER_ALL,
   );
 
+  const [isAddLoading, setisAddLoading] = useState(false);
+
   const [inputValue, setInputValue] = useState(searchQuery);
   const debouncedSearchQuery = useDebounce(inputValue, 500);
 
-  const handleAddTask = (taskData: CreateTaskFormData) => {
-    onAddTask(taskData);
-    closeModal();
+  const handleAddTask = async (taskData: CreateTaskDto) => {
+    setisAddLoading(true);
+    try {
+      if (await onAddTask(taskData)) {
+        closeModal();
+      }
+    } finally {
+      setisAddLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -94,7 +100,12 @@ export const ControlHeader: FC<Props> = ({
           />
           <ViewModeSwitch viewMode={viewMode} onToggle={toggleViewMode} />
           <AddTaskButton openModal={openModal} />
-          <AddTaskModal open={isModalOpen} handleClose={closeModal} onSubmit={handleAddTask} />
+          <AddTaskModal
+            open={isModalOpen}
+            handleClose={closeModal}
+            onSubmit={handleAddTask}
+            isLoading={isAddLoading}
+          />
         </Box>
       </Collapse>
       <CollapseHandle open={open} toggleOpen={toggleOpen} />

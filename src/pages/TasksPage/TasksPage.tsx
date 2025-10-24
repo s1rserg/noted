@@ -1,42 +1,41 @@
 import { Box } from '@mui/material';
-import { mockTasks } from './config';
-import { processTasks } from './helpers/processTasks';
 import { toast } from 'react-toastify';
 import { useLocalStorage } from 'hooks';
 import { useSearchParams } from 'react-router-dom';
-import { type FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { type FC, useCallback, useEffect, useState } from 'react';
 import { TaskStatus, type Task } from 'types/task';
-import { ControlHeader, TaskList, type CreateTaskFormData } from './components';
-import { FilterSortDefaults, QueryKeys, ViewMode, type ViewModeValues } from './types';
+import { ControlHeader, TaskList } from './components';
+import { ViewMode, type ViewModeValues } from './types';
 import { useTranslation } from 'react-i18next';
+import { handleApiError, httpClient, taskApiService, type CreateTaskDto } from 'api';
+import { getQueryParameters } from './helpers/getQueryParams';
 
 const TasksPage: FC = () => {
   const { t } = useTranslation('tasksPage');
   const [viewMode, setViewMode] = useLocalStorage<ViewModeValues>('taskViewMode', ViewMode.GRID);
   const [searchParams] = useSearchParams();
 
-  const searchQuery = searchParams.get(QueryKeys.SEARCH) ?? '';
-  const sortBy = searchParams.get(QueryKeys.SORT_BY) ?? FilterSortDefaults.SORT_BY;
-  const sortOrder = searchParams.get(QueryKeys.SORT_ORDER) ?? FilterSortDefaults.SORT_ORDER;
-  const statusFilter = searchParams.get(QueryKeys.STATUS) ?? FilterSortDefaults.FILTER_ALL;
-  const priorityFilter = searchParams.get(QueryKeys.PRIORITY) ?? FilterSortDefaults.FILTER_ALL;
-
   const [isLoading, setIsLoading] = useState(false);
 
-  const [tasks, setTasks] = useState<Task[]>(mockTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [isHeaderOpen, setIsHeaderOpen] = useState(true);
 
-  const processedTasks = useMemo(
-    () =>
-      processTasks({
-        tasks,
-        searchQuery,
-        sortBy,
-        sortOrder,
-        statusFilter,
-        priorityFilter,
-      }),
-    [tasks, searchQuery, sortBy, sortOrder, statusFilter, priorityFilter],
+  const fetchTasks = useCallback(
+    async (signal?: AbortSignal) => {
+      setIsLoading(true);
+
+      try {
+        const requestConfig = taskApiService.findAll(getQueryParameters(searchParams), signal);
+        const response = await httpClient.request<Task[]>(requestConfig);
+
+        setTasks(response.data);
+      } catch (error) {
+        handleApiError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [searchParams],
   );
 
   const handleCompleteTask = useCallback(
@@ -67,24 +66,29 @@ const TasksPage: FC = () => {
     setViewMode((prev) => (prev === ViewMode.GRID ? ViewMode.LIST : ViewMode.GRID));
   };
 
-  const handleAddTask = (taskData: CreateTaskFormData) => {
-    const newTask = {
-      ...taskData,
-      id: new Date().toString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    setTasks((prev) => [newTask, ...prev]);
+  const handleAddTask = async (taskData: CreateTaskDto) => {
+    try {
+      const requestConfig = taskApiService.create(taskData);
+      await httpClient.request<Task[]>(requestConfig);
+      toast.success(t('add.successMsg'));
+
+      void fetchTasks();
+
+      return true;
+    } catch (error) {
+      handleApiError(error);
+      return false;
+    }
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+    const controller = new AbortController();
+    void fetchTasks(controller.signal);
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => {
+      controller.abort();
+    };
+  }, [fetchTasks]);
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', gap: 4 }}>
@@ -96,7 +100,7 @@ const TasksPage: FC = () => {
         toggleViewMode={handleToggleViewMode}
       />
       <TaskList
-        tasks={processedTasks}
+        tasks={tasks}
         viewMode={viewMode}
         onCompleteTask={handleCompleteTask}
         onDeleteTask={handleDeleteTask}

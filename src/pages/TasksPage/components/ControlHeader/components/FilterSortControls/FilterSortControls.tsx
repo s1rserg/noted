@@ -2,15 +2,10 @@ import TuneIcon from '@mui/icons-material/Tune';
 import { Badge, Box, Button, IconButton, Popover, Stack, Tooltip } from '@mui/material';
 import { FilterControls, SortControls } from './components';
 import { type FC, type MouseEvent, useState } from 'react';
-import {
-  FilterSortDefaults,
-  type PriorityFilterValues,
-  type SortByValues,
-  type SortOrderValues,
-  type StatusFilterValues,
-} from '../../../../types';
+import { FilterSortDefaults, type SortByValues, type SortOrderValues } from '../../../../types';
 import type { Nullable } from 'types/utils';
 import { useTranslation } from 'react-i18next';
+import type { PriorityFilterValues, StatusFilterValues } from 'api';
 
 interface Props {
   sortBy: SortByValues;
