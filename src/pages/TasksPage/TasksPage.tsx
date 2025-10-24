@@ -30,7 +30,7 @@ const TasksPage: FC = () => {
 
       try {
         const requestConfig = taskApiService.findAll(getQueryParameters(searchParams), signal);
-        const response = await httpClient.request<Task[]>(requestConfig);
+        const response = await httpClient<Task[]>(requestConfig);
 
         setTasks(response.data);
       } catch (error) {
@@ -64,10 +64,10 @@ const TasksPage: FC = () => {
     setIsFormLoading(true);
     try {
       if (taskToEdit) {
-        await httpClient.request(taskApiService.update(taskToEdit.id, taskData));
+        await httpClient(taskApiService.update(taskToEdit.id, taskData));
         toast.success(t('edit.successMsg'));
       } else {
-        await httpClient.request(taskApiService.create(taskData));
+        await httpClient(taskApiService.create(taskData));
         toast.success(t('add.successMsg'));
       }
       closeModal();
@@ -82,7 +82,7 @@ const TasksPage: FC = () => {
   const handleCompleteTask = useCallback(
     async (id: Task['id']) => {
       try {
-        await httpClient.request(taskApiService.update(id, { status: TaskStatus.COMPLETED }));
+        await httpClient(taskApiService.update(id, { status: TaskStatus.COMPLETED }));
         toast.success(t('complete.successMsg'));
         void fetchTasks();
       } catch (error) {
@@ -95,7 +95,7 @@ const TasksPage: FC = () => {
   const handleDeleteTask = useCallback(
     async (id: Task['id']) => {
       try {
-        await httpClient.request(taskApiService.delete(id));
+        await httpClient(taskApiService.delete(id));
         toast.success(t('delete.successMsg'));
         void fetchTasks(); //NOTE: needed for pagination later
       } catch (error) {
