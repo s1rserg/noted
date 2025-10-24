@@ -1,8 +1,7 @@
 import { Box, Collapse } from '@mui/material';
-import { useDebounce, useModal, useQueryString } from 'hooks';
+import { useDebounce, useQueryString } from 'hooks';
 import {
   AddTaskButton,
-  AddTaskModal,
   CollapseHandle,
   SearchInput,
   ViewModeSwitch,
@@ -16,12 +15,12 @@ import {
   type SortOrderValues,
   type ViewModeValues,
 } from '../../types';
-import type { StatusFilterValues, PriorityFilterValues, CreateTaskDto } from 'api';
+import type { StatusFilterValues, PriorityFilterValues } from 'api';
 
 interface Props {
   open: boolean;
   toggleOpen: () => void;
-  onAddTask: (taskData: CreateTaskDto) => Promise<boolean>;
+  onOpenAddTask: () => void;
   viewMode: ViewModeValues;
   toggleViewMode: () => void;
 }
@@ -29,12 +28,10 @@ interface Props {
 export const ControlHeader: FC<Props> = ({
   open,
   toggleOpen,
-  onAddTask,
+  onOpenAddTask,
   viewMode,
   toggleViewMode,
 }) => {
-  const { isOpen: isModalOpen, openModal, closeModal } = useModal();
-
   const [searchQuery, setSearchQuery] = useQueryString<string>(QueryKeys.SEARCH);
   const [sortBy, setSortBy] = useQueryString<SortByValues>(
     QueryKeys.SORT_BY,
@@ -53,21 +50,8 @@ export const ControlHeader: FC<Props> = ({
     FilterSortDefaults.FILTER_ALL,
   );
 
-  const [isAddLoading, setisAddLoading] = useState(false);
-
   const [inputValue, setInputValue] = useState(searchQuery);
   const debouncedSearchQuery = useDebounce(inputValue, 500);
-
-  const handleAddTask = async (taskData: CreateTaskDto) => {
-    setisAddLoading(true);
-    try {
-      if (await onAddTask(taskData)) {
-        closeModal();
-      }
-    } finally {
-      setisAddLoading(false);
-    }
-  };
 
   useEffect(() => {
     if (debouncedSearchQuery !== searchQuery) {
@@ -99,13 +83,7 @@ export const ControlHeader: FC<Props> = ({
             setPriorityFilter={setPriorityFilter}
           />
           <ViewModeSwitch viewMode={viewMode} onToggle={toggleViewMode} />
-          <AddTaskButton openModal={openModal} />
-          <AddTaskModal
-            open={isModalOpen}
-            handleClose={closeModal}
-            onSubmit={handleAddTask}
-            isLoading={isAddLoading}
-          />
+          <AddTaskButton openModal={onOpenAddTask} />
         </Box>
       </Collapse>
       <CollapseHandle open={open} toggleOpen={toggleOpen} />

@@ -79,6 +79,14 @@
       "deadlinePast": "Deadline cannot be in the past"
     }
   },
+  "edit": {
+    "title": "Edit a task",
+    "successMsg": "Task was updated successfully.",
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save Changes"
+    }
+  },
   "complete": {
     "title": "Confirm Completion",
     "confirm": "Yes, Complete",
