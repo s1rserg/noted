@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, CircularProgress, Link, Stack, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { SignInLocalSchema, type SignInLocalDto } from 'api';
 import { type FC } from 'react';
@@ -41,7 +42,9 @@ export const LoginForm: FC<Props> = ({ onSubmit, isLoading }) => {
         <Typography variant="h5" component="h1" gutterBottom>
           {t('title')}
         </Typography>
-        <Link href={AppRoutes.REGISTER}>{t('link')}</Link>
+        <Box component={Link} to={AppRoutes.REGISTER} sx={{ color: 'primary.main' }}>
+          {t('link')}
+        </Box>
         <FormInput
           control={control}
           clearErrors={clearErrors}

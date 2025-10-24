@@ -14,6 +14,8 @@ import {
 import { AppRoutes } from 'routes';
 import { localStorageService } from 'utils/LocalStorageService';
 import { useTranslation } from 'react-i18next';
+import { AuthProviderButton } from 'components/AuthProviderButton';
+import GoogleIcon from '@mui/icons-material/Google';
 
 export const RegisterPage: FC = () => {
   const { t } = useTranslation('registerPage');
@@ -67,7 +69,18 @@ export const RegisterPage: FC = () => {
 
   return (
     <>
-      {step === 1 && <Step1Form onSubmit={handleStepOneSubmit} isLoading={isLoading} />}
+      {step === 1 && (
+        <>
+          <Step1Form onSubmit={handleStepOneSubmit} isLoading={isLoading} />
+          <AuthProviderButton
+            fullWidth
+            text="Sign in with Google"
+            icon={<GoogleIcon />}
+            authUrlPath="/auth/google"
+            sx={{ mt: 2, py: 1.5 }}
+          />
+        </>
+      )}
       {step === 2 && (
         <Step2Form onSubmit={handleStepTwoSubmit} onSkip={handleSkip} isLoading={isLoading} />
       )}
