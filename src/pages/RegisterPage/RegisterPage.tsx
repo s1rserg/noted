@@ -61,13 +61,8 @@ export const RegisterPage: FC = () => {
     }
   };
 
-  const handleGoogleAuth = async (credential?: string): Promise<void> => {
+  const handleGoogleAuth = async (credential: string): Promise<void> => {
     try {
-      if (!credential) {
-        toast.error(t('googleErrorMsg'));
-        return;
-      }
-
       const requestConfig = authApiService.googleAuth({ credential });
       const response = await httpClient<AuthResponse>(requestConfig);
 

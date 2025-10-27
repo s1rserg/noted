@@ -47,13 +47,8 @@ export const LoginPage: FC = () => {
     }
   };
 
-  const handleGoogleAuth = async (credential?: string): Promise<void> => {
+  const handleGoogleAuth = async (credential: string): Promise<void> => {
     try {
-      if (!credential) {
-        toast.error(t('googleErrorMsg'));
-        return;
-      }
-
       const requestConfig = authApiService.googleAuth({ credential });
       const response = await httpClient<AuthResponse>(requestConfig);
 
@@ -71,7 +66,10 @@ export const LoginPage: FC = () => {
     <Box>
       <LoginForm onSubmit={handleLoginSubmit} isLoading={isLoading} />
       <Divider sx={{ my: 2 }} />
-      <GoogleAuthButton onSuccess={(credential) => void handleGoogleAuth(credential)} />
+      <GoogleAuthButton
+        onSuccess={(credential) => void handleGoogleAuth(credential)}
+        onError={() => toast.error(t('googleErrorMsg'))}
+      />
     </Box>
   );
 };

@@ -12,6 +12,7 @@ import { FormInput } from 'components/FormInput';
 import { PasswordInput } from 'components/PasswordInput';
 import { Link } from 'react-router-dom';
 import { GoogleAuthButton } from 'components/GoogleAuthButton';
+import { toast } from 'react-toastify';
 
 interface Props {
   onSubmit: (authData: SignUpLocalDto) => Promise<boolean>;
@@ -98,7 +99,10 @@ export const Step1Form: FC<Props> = ({ onSubmit, isLoading, onGoogleSubmit }) =>
         </Stack>
       </Box>
       <Divider sx={{ my: 2 }} />
-      <GoogleAuthButton onSuccess={(credential) => void onGoogleSubmit(credential)} />
+      <GoogleAuthButton
+        onSuccess={(credential) => void onGoogleSubmit(credential)}
+        onError={() => toast.error(t('googleErrorMsg'))}
+      />
     </>
   );
 };

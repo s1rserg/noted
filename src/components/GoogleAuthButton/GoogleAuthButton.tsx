@@ -1,22 +1,22 @@
 import { type FC } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { Box, useTheme } from '@mui/material';
-import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
   onSuccess: (credential: string) => void;
+  onError: () => void;
 }
 
-export const GoogleAuthButton: FC<Props> = ({ onSuccess }) => {
+export const GoogleAuthButton: FC<Props> = ({ onSuccess, onError }) => {
   const theme = useTheme();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
       <GoogleLogin
         onSuccess={({ credential }) => credential && onSuccess(credential)}
-        onError={() => toast.error(t('googleErrorMsg'))}
+        onError={onError}
         theme={theme.palette.mode === 'dark' ? 'filled_black' : 'outline'}
         shape="rectangular"
         locale={i18n.language}
