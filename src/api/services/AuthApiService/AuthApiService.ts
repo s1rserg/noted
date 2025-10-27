@@ -1,4 +1,4 @@
-import type { SignInLocalDto, SignUpLocalDto } from './types';
+import type { SignInGoogleDto, SignInLocalDto, SignUpLocalDto } from './types';
 
 import type { AxiosRequestConfig } from 'axios';
 
@@ -15,6 +15,14 @@ class AuthApiService {
     return {
       method: 'POST',
       url: '/auth/sign-in',
+      data,
+    };
+  }
+
+  public googleAuth(data: SignInGoogleDto): AxiosRequestConfig {
+    return {
+      method: 'POST',
+      url: '/auth/google-auth',
       data,
     };
   }

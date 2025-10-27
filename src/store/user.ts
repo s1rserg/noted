@@ -4,6 +4,7 @@ import { authApiService, handleApiError, httpClient, userApiService } from 'api'
 import type { Nullable } from 'types/utils';
 import { create } from 'zustand';
 import { localStorageService } from 'utils/LocalStorageService';
+import { googleLogout } from '@react-oauth/google';
 
 interface UserState {
   user: Nullable<User>;
@@ -35,6 +36,7 @@ export const useUserStore = create<UserState>((set) => ({
     } catch (error) {
       handleApiError(error);
     } finally {
+      googleLogout();
       localStorageService.deleteAccessToken();
       set({ user: null });
     }
