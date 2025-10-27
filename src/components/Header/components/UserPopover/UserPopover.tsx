@@ -16,7 +16,6 @@ import { useUserStore } from 'store';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from 'routes';
 import { useTranslation } from 'react-i18next';
-import { googleLogout } from '@react-oauth/google';
 
 export const UserPopover: FC = () => {
   const { t } = useTranslation('header');
@@ -40,7 +39,6 @@ export const UserPopover: FC = () => {
   const handleLogout = async () => {
     handleClose();
     await logout();
-    googleLogout();
     void navigate(AppRoutes.LOGIN, { replace: true });
   };
 
