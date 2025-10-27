@@ -32,5 +32,6 @@
     "passwordsDontMatch": "Passwords don't match",
     "nameMin": "Min name length is 2",
     "surnameMin": "Min surname length is 2"
-  }
+  },
+  "googleErrorMsg": "Google sign-up failed. Please try again or use another registration method."
 }

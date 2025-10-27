@@ -5,6 +5,10 @@ export type SignInLocalDto = ZodInfer<typeof SignInLocalSchema>;
 
 export type SignUpLocalDto = ZodInfer<typeof SignUpLocalSchema>;
 
+export type SignInGoogleDto = {
+  credential: string;
+};
+
 export type AuthResponse = {
   accessToken: string;
 };

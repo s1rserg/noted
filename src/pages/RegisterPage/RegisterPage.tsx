@@ -61,13 +61,37 @@ export const RegisterPage: FC = () => {
     }
   };
 
+  const handleGoogleAuth = async (credential?: string): Promise<void> => {
+    try {
+      if (!credential) {
+        toast.error(t('googleErrorMsg'));
+        return;
+      }
+
+      const requestConfig = authApiService.googleAuth({ credential });
+      const response = await httpClient<AuthResponse>(requestConfig);
+
+      localStorageService.setAccessToken(response.data.accessToken);
+
+      void navigate(AppRoutes.TASKS);
+    } catch (error) {
+      handleApiError(error);
+    }
+  };
+
   const handleSkip = () => {
     void navigate(AppRoutes.TASKS);
   };
 
   return (
     <>
-      {step === 1 && <Step1Form onSubmit={handleStepOneSubmit} isLoading={isLoading} />}
+      {step === 1 && (
+        <Step1Form
+          onSubmit={handleStepOneSubmit}
+          isLoading={isLoading}
+          onGoogleSubmit={handleGoogleAuth}
+        />
+      )}
       {step === 2 && (
         <Step2Form onSubmit={handleStepTwoSubmit} onSkip={handleSkip} isLoading={isLoading} />
       )}

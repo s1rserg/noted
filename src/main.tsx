@@ -8,13 +8,16 @@ import './index.css';
 import './config/i18n';
 import { Suspense } from 'react';
 import { Loader } from 'components/Loader';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 createRoot(document.getElementById('root')!).render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Suspense fallback={<Loader />}>
-      <RouterProvider router={appRouter} />
-    </Suspense>
-    <ThemedToastContainer />
-  </ThemeProvider>,
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Suspense fallback={<Loader />}>
+        <RouterProvider router={appRouter} />
+      </Suspense>
+      <ThemedToastContainer />
+    </ThemeProvider>
+  </GoogleOAuthProvider>,
 );
