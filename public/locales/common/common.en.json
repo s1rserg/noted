@@ -5,6 +5,7 @@
   "imageCropper": {
     "select": "Select Image",
     "zoom": "Zoom",
-    "crop": "Crop & Upload"
+    "crop": "Crop & Upload",
+    "errorMsg": "Failed to load image"
   }
 }

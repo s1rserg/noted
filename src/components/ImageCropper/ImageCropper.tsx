@@ -5,6 +5,7 @@ import { getCroppedFile } from './helpers';
 import type { PixelCrop } from './types';
 import type { Nullable } from 'types/utils';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface Props {
   uploadImage: (file: File) => Promise<void>;
@@ -30,7 +31,7 @@ export const ImageCropper: FC<Props> = ({ uploadImage }) => {
       const file = await getCroppedFile(imageSrc, croppedAreaPixels);
       await uploadImage(file);
     } catch (_err) {
-      /* empty */
+      toast.error(t('imageCropper.errorMsg'));
     } finally {
       setLoading(false);
     }
@@ -58,21 +59,18 @@ export const ImageCropper: FC<Props> = ({ uploadImage }) => {
       </Button>
 
       {imageSrc && (
-        <Box position="relative" sx={{ width: '100%', height: 400, aspectRatio: '1 / 1' }}>
-          <Cropper
-            image={imageSrc}
-            crop={crop}
-            zoom={zoom}
-            aspect={1}
-            onCropChange={setCrop}
-            onZoomChange={setZoom}
-            onCropComplete={onCropComplete}
-          />
-        </Box>
-      )}
-
-      {imageSrc && (
         <>
+          <Box position="relative" sx={{ width: '100%', height: 400, aspectRatio: '1 / 1' }}>
+            <Cropper
+              image={imageSrc}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={onCropComplete}
+            />
+          </Box>
           <Box>
             <Typography gutterBottom>{t('imageCropper.zoom')}</Typography>
             <Slider
