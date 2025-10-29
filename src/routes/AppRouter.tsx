@@ -5,6 +5,7 @@ import { RegisterPage } from 'pages/RegisterPage/RegisterPage';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { LoginPage } from 'pages/LoginPage/LoginPage';
 import { ProtectedRoute, PublicRoute } from './components';
+import { ProfilePage } from 'pages/ProfilePage/ProfilePage';
 
 const APP_ROUTES: RouteObject[] = [
   {
@@ -16,6 +17,10 @@ const APP_ROUTES: RouteObject[] = [
           {
             path: AppRoutes.TASKS,
             element: <TasksPage />,
+          },
+          {
+            path: AppRoutes.PROFILE,
+            element: <ProfilePage />,
           },
         ],
       },
@@ -36,15 +41,6 @@ const APP_ROUTES: RouteObject[] = [
             element: <LoginPage />,
           },
         ],
-      },
-    ],
-  },
-  {
-    element: <AuthLayout />,
-    children: [
-      {
-        path: AppRoutes.REGISTER,
-        element: <RegisterPage />,
       },
     ],
   },
