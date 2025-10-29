@@ -11,6 +11,7 @@ export const ProfilePage: FC = () => {
   const { t } = useTranslation('profilePage');
 
   const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
   const initUser = useUserStore((state) => state.initUser);
   const { isOpen, openModal, closeModal } = useModal();
 
@@ -32,9 +33,9 @@ export const ProfilePage: FC = () => {
 
   const handleUploadAvatar = async (file: File): Promise<void> => {
     try {
-      const config = userApiService.uploadAvatar(file);
-      await httpClient(config);
-      await initUser();
+      const avatar = (await httpClient<UserAvatarMedia>(userApiService.uploadAvatar(file))).data;
+      if (!user) return;
+      setUser({ ...user, avatar });
       await fetchAvatars();
       closeModal();
     } catch (error) {
@@ -44,9 +45,10 @@ export const ProfilePage: FC = () => {
 
   const handleSetMainAvatar = async (mediaId: UserAvatarMedia['id']) => {
     try {
-      const config = userApiService.setMainAvatar(mediaId);
-      await httpClient(config);
-      await initUser();
+      const avatar = (await httpClient<UserAvatarMedia>(userApiService.setMainAvatar(mediaId)))
+        .data;
+      if (!user) return;
+      setUser({ ...user, avatar });
     } catch (error) {
       handleApiError(error);
     }
@@ -54,10 +56,9 @@ export const ProfilePage: FC = () => {
 
   const handleDeleteAvatar = async (mediaId: UserAvatarMedia['id']) => {
     try {
-      const config = userApiService.deleteAvatar(mediaId);
-      await httpClient(config);
+      await httpClient(userApiService.deleteAvatar(mediaId));
       await initUser();
-      await fetchAvatars();
+      setAllAvatars((prev) => prev.filter((avatar) => avatar.id !== mediaId));
     } catch (error) {
       handleApiError(error);
     }
