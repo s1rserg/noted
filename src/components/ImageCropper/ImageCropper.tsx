@@ -58,11 +58,7 @@ export const ImageCropper: FC<Props> = ({ uploadImage }) => {
       </Button>
 
       {imageSrc && (
-        <Box
-          position="relative"
-          bgcolor="grey.200"
-          sx={{ width: '100%', maxWidth: 330, height: 'auto', aspectRatio: '1 / 1' }}
-        >
+        <Box position="relative" sx={{ width: '100%', height: 400, aspectRatio: '1 / 1' }}>
           <Cropper
             image={imageSrc}
             crop={crop}
