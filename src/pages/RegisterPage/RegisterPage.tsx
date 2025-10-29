@@ -45,12 +45,6 @@ export const RegisterPage: FC = () => {
   };
 
   const handleStepTwoSubmit = async (data: UpdateUserDto): Promise<boolean> => {
-    const isDataProvided = Object.values(data).some((value) => value !== '' && value !== undefined);
-    if (!isDataProvided) {
-      handleSkip();
-      return false;
-    }
-
     setIsLoading(true);
     try {
       const requestConfig = userApiService.updateProfile(data);
