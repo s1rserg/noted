@@ -4,7 +4,7 @@ import type { infer as ZodInfer } from 'zod';
 
 export type UpdateUserDto = ZodInfer<typeof UpdateUserSchema>;
 
-export interface Media {
+export interface UserAvatarMedia {
   id: number;
   createdAt: string;
   width: number;
@@ -20,5 +20,5 @@ export interface User {
   birthday: Nullable<Date>;
   createdAt: Date;
   updatedAt: Date;
-  avatar: Nullable<Media>;
+  avatar: Nullable<UserAvatarMedia>;
 }

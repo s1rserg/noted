@@ -4,14 +4,14 @@ import type { Nullable } from 'types/utils';
 import { Stack, Typography, IconButton, Tooltip } from '@mui/material';
 import { AddPhotoAlternate, DeleteOutline, CheckCircleOutline } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import type { Media } from 'api';
+import type { UserAvatarMedia } from 'api';
 
 interface Props {
-  avatars: Media[];
+  avatars: UserAvatarMedia[];
   mainAvatarId: Nullable<number>;
   onUpload: () => void;
-  onSetMain: (mediaId: number) => Promise<void>;
-  onDelete: (mediaId: number) => Promise<void>;
+  onSetMain: (mediaId: UserAvatarMedia['id']) => Promise<void>;
+  onDelete: (mediaId: UserAvatarMedia['id']) => Promise<void>;
 }
 
 export const AvatarSlider: FC<Props> = ({

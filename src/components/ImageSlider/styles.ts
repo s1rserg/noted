@@ -1,4 +1,6 @@
-export const overlayStyles = {
+import type { SxProps } from '@mui/material';
+
+export const overlayStyles: SxProps = {
   position: 'absolute',
   top: 0,
   left: 0,
@@ -12,7 +14,7 @@ export const overlayStyles = {
   color: 'white',
 };
 
-export const navigationArrowsStyles = {
+export const navigationArrowsStyles: SxProps = {
   position: 'absolute',
   top: '50%',
   transform: 'translateY(-50%)',

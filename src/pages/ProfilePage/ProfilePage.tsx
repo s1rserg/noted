@@ -3,7 +3,7 @@ import { Loader } from 'components/Loader';
 import { useEffect, useState, type FC } from 'react';
 import { useUserStore } from 'store';
 import { useModal } from 'hooks';
-import { handleApiError, httpClient, userApiService, type Media } from 'api';
+import { handleApiError, httpClient, userApiService, type UserAvatarMedia } from 'api';
 import { useTranslation } from 'react-i18next';
 import { AvatarSlider, UploadAvatarModal } from './components';
 
@@ -14,14 +14,14 @@ export const ProfilePage: FC = () => {
   const initUser = useUserStore((state) => state.initUser);
   const { isOpen, openModal, closeModal } = useModal();
 
-  const [allAvatars, setAllAvatars] = useState<Media[]>([]);
+  const [allAvatars, setAllAvatars] = useState<UserAvatarMedia[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchAvatars = async (signal?: AbortSignal) => {
     setIsLoading(true);
     try {
       const config = userApiService.getAllAvatars(signal);
-      const response = await httpClient<Media[]>(config);
+      const response = await httpClient<UserAvatarMedia[]>(config);
       setAllAvatars(response.data);
     } catch (error) {
       handleApiError(error);
@@ -42,7 +42,7 @@ export const ProfilePage: FC = () => {
     }
   };
 
-  const handleSetMainAvatar = async (mediaId: number) => {
+  const handleSetMainAvatar = async (mediaId: UserAvatarMedia['id']) => {
     try {
       const config = userApiService.setMainAvatar(mediaId);
       await httpClient(config);
@@ -52,7 +52,7 @@ export const ProfilePage: FC = () => {
     }
   };
 
-  const handleDeleteAvatar = async (mediaId: number) => {
+  const handleDeleteAvatar = async (mediaId: UserAvatarMedia['id']) => {
     try {
       const config = userApiService.deleteAvatar(mediaId);
       await httpClient(config);
