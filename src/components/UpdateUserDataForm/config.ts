@@ -1,6 +1,6 @@
 import type { UpdateUserDto } from 'api';
 
-export const Step2DefaultValues: UpdateUserDto = {
+export const UpdateUserDataDefaultValues: UpdateUserDto = {
   name: '',
   surname: '',
   birthday: undefined,
