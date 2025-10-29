@@ -52,7 +52,7 @@ export const UserPopover: FC = () => {
         <span>
           <IconButton onClick={handleClick} disabled={!user}>
             <Badge variant="dot" color="error" overlap="circular" invisible={!emptyProfile}>
-              <Avatar />
+              <Avatar src={user.avatar?.secureUrl || ''} />
             </Badge>
           </IconButton>
         </span>
