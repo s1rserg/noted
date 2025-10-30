@@ -1,4 +1,4 @@
-import { Step1Form, Step2Form } from './components';
+import { Step1Form } from './components';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useState, type FC } from 'react';
@@ -14,6 +14,7 @@ import {
 import { AppRoutes } from 'routes';
 import { localStorageService } from 'utils/LocalStorageService';
 import { useTranslation } from 'react-i18next';
+import { UpdateUserDataForm } from 'components/UpdateUserDataForm';
 
 export const RegisterPage: FC = () => {
   const { t } = useTranslation('registerPage');
@@ -55,7 +56,6 @@ export const RegisterPage: FC = () => {
       return true;
     } catch (error) {
       handleApiError(error);
-
       setIsLoading(false);
       return false;
     }
@@ -88,7 +88,14 @@ export const RegisterPage: FC = () => {
         />
       )}
       {step === 2 && (
-        <Step2Form onSubmit={handleStepTwoSubmit} onSkip={handleSkip} isLoading={isLoading} />
+        <UpdateUserDataForm
+          onSubmit={handleStepTwoSubmit}
+          onCancel={handleSkip}
+          isLoading={isLoading}
+          title={t('step2.title')}
+          cancelButtonText={t('step2.buttons.skip')}
+          submitButtonText={t('step2.buttons.save')}
+        />
       )}
     </>
   );

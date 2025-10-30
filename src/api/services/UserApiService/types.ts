@@ -1,8 +1,10 @@
 import type { Nullable } from 'types/utils';
-import type { UpdateUserSchema } from './schemas';
-import type { infer as ZodInfer } from 'zod';
 
-export type UpdateUserDto = ZodInfer<typeof UpdateUserSchema>;
+export type UpdateUserDto = {
+  name?: string;
+  surname?: string;
+  birthday?: string;
+};
 
 export interface UserAvatarMedia {
   id: number;
@@ -17,7 +19,7 @@ export interface User {
   email: string;
   name: Nullable<string>;
   surname: Nullable<string>;
-  birthday: Nullable<Date>;
+  birthday: Nullable<string>;
   createdAt: Date;
   updatedAt: Date;
   avatar: Nullable<UserAvatarMedia>;

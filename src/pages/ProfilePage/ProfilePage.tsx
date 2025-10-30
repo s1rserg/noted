@@ -1,11 +1,19 @@
-import { Box, Button, Paper, Stack, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { Loader } from 'components/Loader';
 import { useEffect, useState, type FC } from 'react';
 import { useUserStore } from 'store';
 import { useModal } from 'hooks';
-import { handleApiError, httpClient, userApiService, type UserAvatarMedia } from 'api';
+import {
+  handleApiError,
+  httpClient,
+  userApiService,
+  type UpdateUserDto,
+  type User,
+  type UserAvatarMedia,
+} from 'api';
 import { useTranslation } from 'react-i18next';
-import { AvatarSlider, UploadAvatarModal } from './components';
+import { AvatarSlider, UploadAvatarModal, UserData, UpdateProfileModal } from './components';
+import { toast } from 'react-toastify';
 
 export const ProfilePage: FC = () => {
   const { t } = useTranslation('profilePage');
@@ -13,13 +21,24 @@ export const ProfilePage: FC = () => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const initUser = useUserStore((state) => state.initUser);
-  const { isOpen, openModal, closeModal } = useModal();
+  const {
+    isOpen: isUploadModalOpen,
+    openModal: openUploadModal,
+    closeModal: closeUploadModal,
+  } = useModal();
+
+  const {
+    isOpen: isUpdateModalOpen,
+    openModal: openUpdateModal,
+    closeModal: closeUpdateModal,
+  } = useModal();
 
   const [allAvatars, setAllAvatars] = useState<UserAvatarMedia[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [areAvatarsLoading, setAreAvatarsLoading] = useState(true);
+  const [isUpdateLoading, setIsUpdateLoading] = useState(false);
 
   const fetchAvatars = async (signal?: AbortSignal) => {
-    setIsLoading(true);
+    setAreAvatarsLoading(true);
     try {
       const config = userApiService.getAllAvatars(signal);
       const response = await httpClient<UserAvatarMedia[]>(config);
@@ -27,7 +46,23 @@ export const ProfilePage: FC = () => {
     } catch (error) {
       handleApiError(error);
     } finally {
-      setIsLoading(false);
+      setAreAvatarsLoading(false);
+    }
+  };
+
+  const handleUpdateUserSubmit = async (data: UpdateUserDto): Promise<boolean> => {
+    setIsUpdateLoading(true);
+    try {
+      const updatedUser = (await httpClient<User>(userApiService.updateProfile(data))).data;
+      setUser({ ...user, ...updatedUser });
+      toast.success(t('updateModal.successMsg'));
+      closeUpdateModal();
+      return true;
+    } catch (error) {
+      handleApiError(error);
+      return false;
+    } finally {
+      setIsUpdateLoading(false);
     }
   };
 
@@ -37,7 +72,7 @@ export const ProfilePage: FC = () => {
       if (!user) return;
       setUser({ ...user, avatar });
       await fetchAvatars();
-      closeModal();
+      closeUploadModal();
     } catch (error) {
       handleApiError(error);
     }
@@ -71,7 +106,7 @@ export const ProfilePage: FC = () => {
     return () => controller.abort();
   }, []);
 
-  if (!user || isLoading) {
+  if (!user || areAvatarsLoading) {
     return <Loader />;
   }
 
@@ -81,37 +116,25 @@ export const ProfilePage: FC = () => {
         <AvatarSlider
           avatars={allAvatars}
           mainAvatarId={user.avatar?.id ?? null}
-          onUpload={openModal}
+          onUpload={openUploadModal}
           onSetMain={handleSetMainAvatar}
           onDelete={handleDeleteAvatar}
         />
-
-        <Paper sx={{ width: 400, p: 3 }}>
-          <Stack spacing={2}>
-            <Typography variant="h5">{t('title')}</Typography>
-            <Typography>
-              <strong>{t('labels.email')}: </strong> {user.email}
-            </Typography>
-            <Typography>
-              <strong>{t('labels.name')}: </strong> {user.name ?? '-'}
-            </Typography>
-            <Typography>
-              <strong>{t('labels.surname')}: </strong> {user.surname ?? '-'}
-            </Typography>
-            <Typography>
-              <strong>{t('labels.birthday')}: </strong>
-              {user.birthday ? new Date(user.birthday).toISOString().split('T')[0] : '-'}
-            </Typography>
-            <Typography>
-              <strong>{t('labels.joined')}: </strong>
-              {new Date(user.createdAt).toISOString().split('T')[0]}
-            </Typography>
-            <Button variant="contained">{t('buttons.edit')}</Button>
-          </Stack>
-        </Paper>
+        <UserData user={user} openUpdateModal={openUpdateModal} />
       </Box>
 
-      <UploadAvatarModal isOpen={isOpen} onClose={closeModal} onUpload={handleUploadAvatar} />
+      <UploadAvatarModal
+        isOpen={isUploadModalOpen}
+        onClose={closeUploadModal}
+        onUpload={handleUploadAvatar}
+      />
+      <UpdateProfileModal
+        isOpen={isUpdateModalOpen}
+        onClose={closeUpdateModal}
+        onSubmit={handleUpdateUserSubmit}
+        isLoading={isUpdateLoading}
+        user={user}
+      />
     </>
   );
 };

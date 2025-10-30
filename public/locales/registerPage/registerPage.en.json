@@ -14,11 +14,6 @@
   },
   "step2": {
     "title": "Additional Info",
-    "labels": {
-      "name": "Name",
-      "surname": "Surname",
-      "birthday": "Birthday"
-    },
     "buttons": {
       "skip": "Skip",
       "save": "Save"
@@ -29,9 +24,7 @@
     "email": "Email is not valid",
     "passwordMin": "Min password length is 6",
     "confirmPasswordRequired": "Confirm password is required",
-    "passwordsDontMatch": "Passwords don't match",
-    "nameMin": "Min name length is 2",
-    "surnameMin": "Min surname length is 2"
+    "passwordsDontMatch": "Passwords don't match"
   },
   "googleErrorMsg": "Google sign-up failed. Please try again or use another registration method."
 }
