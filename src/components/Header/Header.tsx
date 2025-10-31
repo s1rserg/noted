@@ -1,5 +1,5 @@
 import { Box, Divider } from '@mui/material';
-import { Logo, ThemeSwitch, UserPopover } from './components';
+import { HeaderNavIcon, Logo, ThemeSwitch, UserPopover } from './components';
 import type { FC } from 'react';
 import { LanguageSwitch } from './components/LanguageSwitch';
 
@@ -9,6 +9,7 @@ export const Header: FC = () => {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
         <Logo />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <HeaderNavIcon />
           <ThemeSwitch />
           <LanguageSwitch />
           <UserPopover />

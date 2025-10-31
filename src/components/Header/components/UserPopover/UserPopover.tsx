@@ -51,7 +51,7 @@ export const UserPopover: FC = () => {
       <Tooltip title={t('buttons.profile')}>
         <span>
           <IconButton onClick={handleClick} disabled={!user}>
-            <Badge variant="dot" color="error" overlap="circular" invisible={!emptyProfile}>
+            <Badge variant="dot" color="secondary" overlap="circular" invisible={!emptyProfile}>
               <Avatar src={user.avatar?.secureUrl || ''} />
             </Badge>
           </IconButton>

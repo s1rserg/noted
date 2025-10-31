@@ -20,8 +20,8 @@ export const TaskPriority = {
 
 export const TaskStatus = {
   PENDING: 'pending',
-  COMPLETED: 'completed',
   IN_PROGRESS: 'in_progress',
+  COMPLETED: 'completed',
 } as const;
 
 export type TaskPriorityValues = ValueOf<typeof TaskPriority>;

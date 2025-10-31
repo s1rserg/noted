@@ -1,5 +1,5 @@
 import type { AxiosRequestConfig } from 'axios';
-import type { CreateTaskDto, TaskQueryParameters, UpdateTaskDto } from './types';
+import type { CreateTaskDto, ReorderTaskDto, TaskQueryParameters, UpdateTaskDto } from './types';
 import type { Task } from 'types/task';
 
 class TaskApiService {
@@ -32,6 +32,14 @@ class TaskApiService {
     return {
       method: 'PATCH',
       url: `/tasks/${id}`,
+      data,
+    };
+  }
+
+  public reorder(id: Task['id'], data: ReorderTaskDto): AxiosRequestConfig {
+    return {
+      method: 'PATCH',
+      url: `/tasks/${id}/reorder`,
       data,
     };
   }
