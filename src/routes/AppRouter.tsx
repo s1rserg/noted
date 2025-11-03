@@ -6,6 +6,7 @@ import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import { LoginPage } from 'pages/LoginPage/LoginPage';
 import { ProtectedRoute, PublicRoute } from './components';
 import { ProfilePage } from 'pages/ProfilePage/ProfilePage';
+import { KanbanPage } from 'pages/KanbanPage/KanbanPage';
 
 const APP_ROUTES: RouteObject[] = [
   {
@@ -21,6 +22,10 @@ const APP_ROUTES: RouteObject[] = [
           {
             path: AppRoutes.PROFILE,
             element: <ProfilePage />,
+          },
+          {
+            path: AppRoutes.KANBAN,
+            element: <KanbanPage />,
           },
         ],
       },

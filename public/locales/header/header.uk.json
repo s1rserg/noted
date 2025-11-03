@@ -5,6 +5,8 @@
     "changeLanguage": "Змінити мову на {{lang}}",
     "theme": "Перемкнути тему",
     "profile": "Профіль",
-    "logout": "Вийти"
+    "logout": "Вийти",
+    "backToTasks": "Назад до завдань",
+    "kanbanView": "Вигляд Канбан"
   }
 }
