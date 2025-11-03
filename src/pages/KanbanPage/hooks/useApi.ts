@@ -8,7 +8,7 @@ export const useApi = (setTasksByStatus: Dispatch<SetStateAction<TasksByStatus>>
   const fetchTasks = useCallback(
     async (status: Task['status'], signal?: AbortSignal) => {
       try {
-        const requestConfig = taskApiService.findAll({ status }, signal);
+        const requestConfig = taskApiService.findAllByPosition({ status }, signal);
         const response = await httpClient<Task[]>(requestConfig);
 
         setTasksByStatus((prev) => ({

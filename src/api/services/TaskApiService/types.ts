@@ -39,3 +39,7 @@ export type TaskQueryParameters = {
   page?: number;
   perPage?: number;
 };
+
+export type TaskByPositionQueryParameters = {
+  status: string;
+};

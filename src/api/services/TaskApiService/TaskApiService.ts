@@ -12,6 +12,18 @@ class TaskApiService {
     };
   }
 
+  public findAllByPosition(
+    queryParams: TaskQueryParameters,
+    signal?: AbortSignal,
+  ): AxiosRequestConfig {
+    return {
+      method: 'GET',
+      url: '/tasks/by-position',
+      params: queryParams,
+      signal,
+    };
+  }
+
   public findOne(id: Task['id'], signal?: AbortSignal): AxiosRequestConfig {
     return {
       method: 'GET',
