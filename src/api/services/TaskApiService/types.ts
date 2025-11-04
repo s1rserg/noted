@@ -1,9 +1,15 @@
-import type { TaskPriorityValues, TaskStatusValues } from 'types/task';
+import type { Task, TaskPriorityValues, TaskStatusValues } from 'types/task';
 import type { infer as ZodInfer } from 'zod';
 import type { CreateTaskSchema, UpdateTaskSchema } from './schemas';
+import type { Nullable } from 'types/utils';
 
 export type CreateTaskDto = ZodInfer<typeof CreateTaskSchema>;
 export type UpdateTaskDto = ZodInfer<typeof UpdateTaskSchema>;
+
+export interface ReorderTaskDto {
+  nextTaskId: Nullable<string>;
+  status: Task['status'];
+}
 
 export const SortBy = {
   CREATED_AT: 'createdAt',
@@ -32,4 +38,8 @@ export type TaskQueryParameters = {
 
   page?: number;
   perPage?: number;
+};
+
+export type TaskByPositionQueryParameters = {
+  status: string;
 };

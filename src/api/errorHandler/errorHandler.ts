@@ -1,9 +1,13 @@
 import { toast } from 'react-toastify';
-import { isAxiosError } from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { i18next } from 'config/i18n';
 
 export const handleApiError = (error: unknown, showToast = true) => {
   if (!showToast) return;
+
+  if (axios.isCancel(error)) {
+    return;
+  }
 
   if (!isAxiosError(error)) {
     toast.error(i18next.t('unknownError'));
