@@ -40,6 +40,13 @@ export type TaskQueryParameters = {
   perPage?: number;
 };
 
-export type TaskByPositionQueryParameters = {
+export type TaskCursorParams = {
   status: string;
+  limit?: number;
+  cursor: Nullable<string>;
 };
+
+export interface TaskCursorResponse {
+  data: Task[];
+  hasMore: boolean;
+}

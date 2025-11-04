@@ -1,5 +1,11 @@
 import type { AxiosRequestConfig } from 'axios';
-import type { CreateTaskDto, ReorderTaskDto, TaskQueryParameters, UpdateTaskDto } from './types';
+import type {
+  CreateTaskDto,
+  ReorderTaskDto,
+  TaskCursorParams,
+  TaskQueryParameters,
+  UpdateTaskDto,
+} from './types';
 import type { Task } from 'types/task';
 
 class TaskApiService {
@@ -12,13 +18,10 @@ class TaskApiService {
     };
   }
 
-  public findAllByPosition(
-    queryParams: TaskQueryParameters,
-    signal?: AbortSignal,
-  ): AxiosRequestConfig {
+  public findAllCursor(queryParams: TaskCursorParams, signal?: AbortSignal): AxiosRequestConfig {
     return {
       method: 'GET',
-      url: '/tasks/by-position',
+      url: '/tasks/cursor',
       params: queryParams,
       signal,
     };
