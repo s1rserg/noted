@@ -10,3 +10,8 @@ export interface SortActivatorProps {
 }
 
 export type TasksByStatus = Record<Task['status'], Task[]>;
+
+export type PageInfo = {
+  hasMore: boolean;
+  isLoading: boolean;
+};

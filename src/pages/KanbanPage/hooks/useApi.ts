@@ -1,22 +1,37 @@
 import { useCallback, type Dispatch, type SetStateAction } from 'react';
-import { handleApiError, httpClient, taskApiService } from 'api';
+import { handleApiError, httpClient, taskApiService, type TaskCursorResponse } from 'api';
 import type { Task } from 'types/task';
 import type { TasksByStatus } from '../types';
 import type { Nullable } from 'types/utils';
 
 export const useApi = (setTasksByStatus: Dispatch<SetStateAction<TasksByStatus>>) => {
   const fetchTasks = useCallback(
-    async (status: Task['status'], signal?: AbortSignal) => {
+    async (
+      status: Task['status'],
+      lastTask?: Task,
+      signal?: AbortSignal,
+    ): Promise<TaskCursorResponse> => {
       try {
-        const requestConfig = taskApiService.findAllByPosition({ status }, signal);
-        const response = await httpClient<Task[]>(requestConfig);
+        let cursor = null;
+        if (lastTask) {
+          cursor = btoa(
+            JSON.stringify({
+              id: lastTask.id,
+            }),
+          );
+        }
+        const requestConfig = taskApiService.findAllCursor({ status, cursor }, signal);
+        const response = await httpClient<TaskCursorResponse>(requestConfig);
 
         setTasksByStatus((prev) => ({
           ...prev,
-          [status]: response.data,
+          [status]: [...(prev[status] || []), ...response.data.data],
         }));
+
+        return response.data;
       } catch (error) {
         handleApiError(error);
+        return { data: [], hasMore: false };
       }
     },
     [setTasksByStatus],
