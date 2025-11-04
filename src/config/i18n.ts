@@ -25,7 +25,7 @@ void i18next
 
     returnEmptyString: false,
     returnNull: false,
-    ns: ['common', 'header', 'loginPage', 'registerPage', 'tasksPage'],
+    ns: ['common', 'header', 'loginPage', 'registerPage', 'tasksPage', 'taskDetailsPage'],
     defaultNS: 'common',
     detection: {
       order: ['localStorage', 'cookie'],

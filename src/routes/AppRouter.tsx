@@ -7,6 +7,7 @@ import { LoginPage } from 'pages/LoginPage/LoginPage';
 import { ProtectedRoute, PublicRoute } from './components';
 import { ProfilePage } from 'pages/ProfilePage/ProfilePage';
 import { KanbanPage } from 'pages/KanbanPage/KanbanPage';
+import { TaskDetailsPage } from 'pages/TaskDetailsPage/TaskDetailsPage';
 
 const APP_ROUTES: RouteObject[] = [
   {
@@ -26,6 +27,10 @@ const APP_ROUTES: RouteObject[] = [
           {
             path: AppRoutes.KANBAN,
             element: <KanbanPage />,
+          },
+          {
+            path: AppRoutes.TASK_DETAILS,
+            element: <TaskDetailsPage />,
           },
         ],
       },
