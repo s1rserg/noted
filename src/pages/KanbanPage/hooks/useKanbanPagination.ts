@@ -1,11 +1,11 @@
-import { useCallback } from 'react';
+import { useCallback, type Dispatch, type SetStateAction } from 'react';
 import type { Task } from 'types/task';
 import type { PageInfo } from '../types';
 
 export const useKanbanPagination = (
   tasks: Record<Task['status'], Task[]>,
   pageInfo: Record<Task['status'], PageInfo>,
-  setPageInfo: React.Dispatch<React.SetStateAction<Record<Task['status'], PageInfo>>>,
+  setPageInfo: Dispatch<SetStateAction<Record<Task['status'], PageInfo>>>,
   fetchTasks: (status: Task['status'], lastTask?: Task) => Promise<{ hasMore: boolean }>,
 ) => {
   const handleLoadMore = useCallback(
