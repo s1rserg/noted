@@ -8,13 +8,8 @@ export const getQueryParameters = (searchParams: URLSearchParams): TaskQueryPara
   const currentSortBy = get(QueryKeys.SORT_BY);
   const currentSortOrder = get(QueryKeys.SORT_ORDER);
 
-  let finalSortBy: string | undefined;
-  let finalSortOrder: string | undefined;
-
-  if (currentSortBy || currentSortOrder) {
-    finalSortBy = currentSortBy || FilterSortDefaults.SORT_BY;
-    finalSortOrder = currentSortOrder || FilterSortDefaults.SORT_ORDER;
-  }
+  const finalSortBy = currentSortBy || FilterSortDefaults.SORT_BY;
+  const finalSortOrder = currentSortOrder || FilterSortDefaults.SORT_ORDER;
 
   return {
     q: q,

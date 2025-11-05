@@ -56,8 +56,8 @@ export const Column: FC<Props> = ({ id, title, tasks, hasMore, isLoadingMore, on
     <Box
       ref={setNodeRef}
       sx={{
-        width: 340,
-        minwidth: 300,
+        width: '100%',
+        minWidth: 300,
         m: 'auto',
         maxHeight: '85dvh',
         p: 2,
